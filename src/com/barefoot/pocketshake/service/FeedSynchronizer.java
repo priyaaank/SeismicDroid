@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -21,25 +23,46 @@ import com.barefoot.pocketshake.R;
 
 public class FeedSynchronizer extends Service {
 
-	private static final String BROADCAST_ACTION = "com.barefoot.pocketshake.service.FeedSynchronizer";
+	public static final String BROADCAST_ACTION = "com.barefoot.pocketshake.service.FeedSynchronizer";
 	private HttpClient client;
 	private String feedUrl;
 	private final Binder binder = new LocalBinder();
 	private String earthquakeFeed;
 	private Intent broadcast=new Intent(BROADCAST_ACTION);
+	private Timer timer = new Timer();
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
 
 		client = new DefaultHttpClient();
-		feedUrl = getString(R.string.app_name);
+		feedUrl = getString(R.string.feed_url);
+	
+		//startservice();		
+		updateFeed();
+	}
+	
+	
+	private void startservice() {
+		timer.scheduleAtFixedRate( new TimerTask() {
+			public void run() {
+				updateFeed();
+			}
+		}, 0, 60000L);
+	}
+	
+	private void stopservice() {
+		if (timer != null){
+			timer.cancel();
+		}
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-
+//		if(timer != null) {
+//			stopservice();
+//		}
 		client.getConnectionManager().shutdown();
 	}
 
@@ -57,7 +80,7 @@ public class FeedSynchronizer extends Service {
 	}
 
 	public class LocalBinder extends Binder {
-		FeedSynchronizer getService() {
+		public FeedSynchronizer getService() {
 			return (FeedSynchronizer.this);
 		}
 	}
