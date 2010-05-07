@@ -1,11 +1,11 @@
 package com.barefoot.pocketshake.service;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Vector;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -20,6 +20,8 @@ import android.os.Binder;
 import android.os.IBinder;
 
 import com.barefoot.pocketshake.R;
+import com.barefoot.pocketshake.data.EarthQuake;
+import com.barefoot.pocketshake.workers.QuakeFeedParser;
 
 public class FeedSynchronizer extends Service {
 
@@ -27,10 +29,12 @@ public class FeedSynchronizer extends Service {
 	private HttpClient client;
 	private String feedUrl;
 	private final Binder binder = new LocalBinder();
-	private String earthquakeFeed;
+	//private String earthquakeFeed;
 	private Intent broadcast=new Intent(BROADCAST_ACTION);
 	private Timer timer = new Timer();
-
+	private ArrayList<EarthQuake> earthQuakes = new ArrayList<EarthQuake>();
+	private QuakeFeedParser parser;
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -72,7 +76,7 @@ public class FeedSynchronizer extends Service {
 	}
 
 	synchronized public String getEarthquakeData() {
-		return (earthquakeFeed);
+		return (Integer.toString(earthQuakes.size()));
 	}
 
 	private void updateFeed() {
@@ -84,24 +88,10 @@ public class FeedSynchronizer extends Service {
 			return (FeedSynchronizer.this);
 		}
 	}
-
-	public String generateString(InputStream stream) {
-		InputStreamReader reader = new InputStreamReader(stream);
-		BufferedReader buffer = new BufferedReader(reader);
-		StringBuilder sb = new StringBuilder();
-
-		try {
-			String cur;
-			while ((cur = buffer.readLine()) != null) {
-				sb.append(cur + "\n");
-			}
-			stream.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return sb.toString();
+	
+	protected ArrayList<EarthQuake> generateQuakes(InputStream content) {
+		parser = new QuakeFeedParser(content);
+		return parser.asParsedObject();
 	}
 
 	class FetchFeedTask extends AsyncTask<Void, Void, Void> {
@@ -113,10 +103,9 @@ public class FeedSynchronizer extends Service {
 			try {
 				response = client.execute(getMethod);
 				HttpEntity entity = response.getEntity();
-				String data = generateString(entity.getContent());
-
-				synchronized (this) {
-					earthquakeFeed = data;
+				ArrayList<EarthQuake> generateQuakes = generateQuakes(entity.getContent());
+				synchronized(this) {
+					earthQuakes = generateQuakes;
 				}
 				sendBroadcast(broadcast);
 			} catch (Throwable t) {

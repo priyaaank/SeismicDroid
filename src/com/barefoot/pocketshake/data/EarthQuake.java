@@ -18,6 +18,10 @@ public class EarthQuake {
 		this.intensity = intensityAndLocation[0].trim();
 		this.intensity = intensity.substring(1).trim();
 		
+		String[] latitudeNLongitude = cordinates.split(" ");
+		this.latitude = latitudeNLongitude[0].trim();
+		this.longitude = latitudeNLongitude[1].trim();
+		
 		String[] dateNTime = dateTime.split("T");
 		this.date = dateNTime[0].trim();
 		this.time = dateNTime[1].trim();
