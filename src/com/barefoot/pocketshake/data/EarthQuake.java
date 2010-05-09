@@ -1,5 +1,7 @@
 package com.barefoot.pocketshake.data;
 
+import com.barefoot.pocketshake.exceptions.InvalidFeedException;
+
 public class EarthQuake {
 	
 	private String id;
@@ -10,7 +12,10 @@ public class EarthQuake {
 	private String date;
 	private String time;
 	
-	public EarthQuake(String id, String title, String cordinates, String dateTime) {
+	public EarthQuake(String id, String title, String cordinates, String dateTime) 
+	throws InvalidFeedException {
+		boolean exception = false;
+		
 		this.id = id;
 		
 		String[] intensityAndLocation = title.split(", ");

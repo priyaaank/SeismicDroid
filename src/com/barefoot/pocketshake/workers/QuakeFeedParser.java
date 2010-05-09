@@ -17,6 +17,7 @@ import org.xml.sax.SAXException;
 import android.util.Log;
 
 import com.barefoot.pocketshake.data.EarthQuake;
+import com.barefoot.pocketshake.exceptions.InvalidFeedException;
 
 public class QuakeFeedParser {
 	
@@ -47,7 +48,11 @@ public class QuakeFeedParser {
 			    	title = getNodeValueWithTagNameAs(currentNode, "title");
 			    	cordinates = getNodeValueWithTagNameAs(currentNode, "georss:point");
 			    	dateTime = getNodeValueWithTagNameAs(currentNode, "updated");
-			    	parsedObjectList.add(new EarthQuake(id, title, cordinates, dateTime));
+			    	try {
+			    		parsedObjectList.add(new EarthQuake(id, title, cordinates, dateTime));
+			    	} catch(InvalidFeedException ife) {
+			    		//just procastinate the feed sync until next time out happens
+			    	}
 			    }
 			}
 		}
