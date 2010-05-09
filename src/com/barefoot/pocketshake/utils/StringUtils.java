@@ -1,0 +1,10 @@
+package com.barefoot.pocketshake.utils;
+
+public class StringUtils {
+
+	public static boolean isNullOrBlank(String valueToCheck){
+		if(null == valueToCheck || valueToCheck.trim().length() == 0) 
+			return true;
+		return false;
+	}
+}
