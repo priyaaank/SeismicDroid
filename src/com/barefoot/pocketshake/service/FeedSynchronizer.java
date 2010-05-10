@@ -16,9 +16,11 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.barefoot.pocketshake.R;
 import com.barefoot.pocketshake.data.EarthQuake;
+import com.barefoot.pocketshake.storage.EarthQuakeDatabase;
 import com.barefoot.pocketshake.workers.QuakeFeedParser;
 
 public class FeedSynchronizer extends Service {
@@ -32,6 +34,7 @@ public class FeedSynchronizer extends Service {
 	private Timer timer = new Timer();
 	private ArrayList<EarthQuake> earthQuakes = new ArrayList<EarthQuake>();
 	private QuakeFeedParser parser;
+	private EarthQuakeDatabase db;
 	
 	@Override
 	public void onCreate() {
@@ -39,6 +42,7 @@ public class FeedSynchronizer extends Service {
 
 		client = new DefaultHttpClient();
 		feedUrl = getString(R.string.feed_url);
+		db = new EarthQuakeDatabase(this);
 	
 		//startservice();		
 		updateFeed();
@@ -62,6 +66,7 @@ public class FeedSynchronizer extends Service {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		db.close();
 //		if(timer != null) {
 //			stopservice();
 //		}
@@ -105,11 +110,13 @@ public class FeedSynchronizer extends Service {
 				synchronized(this) {
 					earthQuakes = generateQuakes;
 				}
+				
+				//save entries to database
+				db.saveNewEarthquakesOnly(earthQuakes.toArray(new EarthQuake[earthQuakes.size()]));
 				sendBroadcast(broadcast);
 			} catch (Throwable t) {
-				t.printStackTrace();
+				Log.e("FetchingNSaving Earthquakes", t.getMessage());
 			}
-
 			return (null);
 		}
 

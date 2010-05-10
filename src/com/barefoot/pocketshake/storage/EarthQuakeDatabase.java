@@ -12,11 +12,10 @@ import android.util.Log;
 
 import com.barefoot.pocketshake.R;
 import com.barefoot.pocketshake.data.EarthQuake;
-import com.barefoot.pocketshake.utils.StringUtils;
 
 public class EarthQuakeDatabase extends SQLiteOpenHelper {
 
-	private static final String DATABASE_NAME = "EarthQuakes";
+	private static final String DATABASE_NAME = "PocketShake";
 	private static final int DATABASE_VERSION = 1;
 	private final Context mContext;
 
@@ -148,21 +147,21 @@ public class EarthQuakeDatabase extends SQLiteOpenHelper {
 	}
 
 	private String getInsertQuery(EarthQuake eachEarthQuake) {
-		StringBuffer insertQuery = new StringBuffer("Insert into earthquakes (_id, intensity, location, longitude, latitude, time, date) values ");
+		StringBuffer insertQuery = new StringBuffer("Insert into earthquakes (intensity, location, longitude, latitude, time, date, _id) values (");
+		insertQuery.append(databaseValue(eachEarthQuake.getIntensity()));
+		insertQuery.append(databaseValue(eachEarthQuake.getLocation()));
+		insertQuery.append(databaseValue(eachEarthQuake.getLongitude()));
+		insertQuery.append(databaseValue(eachEarthQuake.getLatitude()));
+		insertQuery.append(databaseValue(eachEarthQuake.getTime()));
+		insertQuery.append(databaseValue(eachEarthQuake.getDate()));
 		insertQuery.append("'" + eachEarthQuake.getId() + "'");
-		databaseValue(eachEarthQuake.getIntensity());
-		databaseValue(eachEarthQuake.getLocation());
-		databaseValue(eachEarthQuake.getLongitude());
-		databaseValue(eachEarthQuake.getLatitude());
-		databaseValue(eachEarthQuake.getTime());
-		databaseValue(eachEarthQuake.getDate());
 		insertQuery.append(")");
 		
 		return insertQuery.toString();
 	}
 
 	private String databaseValue(String value) {
-		return value == null ? "null" : "'" + value + "'"; 
+		return value == null ? "null, " : "'" + value + "', "; 
 	}
 
 	public boolean exists(EarthQuake eachEarthQuake) {
@@ -171,9 +170,11 @@ public class EarthQuakeDatabase extends SQLiteOpenHelper {
 			String count_query = "Select count(*) from earthquakes where _id = ?";
 			try {
 				c = getReadableDatabase().rawQuery(count_query, new String[] {eachEarthQuake.getId()});
-				if (c.getCount() > 0)
+				if (c!=null && c.moveToFirst() && c.getInt(0) > 0)
 					return true;
 				
+			} catch(Exception e) {
+				Log.e("Running Count Query", e.getMessage());
 			} finally {
 				if(c!=null) {
 					try {
