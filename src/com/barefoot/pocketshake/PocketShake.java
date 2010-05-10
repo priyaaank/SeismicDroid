@@ -1,5 +1,7 @@
 package com.barefoot.pocketshake;
 
+import java.util.ArrayList;
+
 import android.app.ListActivity;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -14,17 +16,22 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.barefoot.pocketshake.service.FeedSynchronizer;
+import com.barefoot.pocketshake.storage.EarthQuakeDatabase;
+import com.barefoot.pocketshake.storage.EarthQuakeDatabase.EarthquakeCursor;
 
 public class PocketShake extends ListActivity {
 	
 	private FeedSynchronizer appService=null;
 	private ArrayAdapter<String> messageListAdapter = null;
+	private EarthQuakeDatabase db;
 	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        
+        db = new EarthQuakeDatabase(this);
         
         bindService(new Intent(this, FeedSynchronizer.class),
 				onService, BIND_AUTO_CREATE);
@@ -61,7 +68,7 @@ public class PocketShake extends ListActivity {
 	private void updateQuakeFeed() {
 		if (appService != null) {
 			String data = appService.getEarthquakeData();
-			messageListAdapter = new ArrayAdapter<String>(PocketShake.this, R.layout.quake, generateTempData(data));
+			messageListAdapter = new ArrayAdapter<String>(PocketShake.this, R.layout.quake, fetchLatestFeeds());
 			setListAdapter(messageListAdapter);
 		}
 	}
@@ -82,13 +89,24 @@ public class PocketShake extends ListActivity {
 		}
 	};
 	
-	private String[] generateTempData(String data) {
-		String[] stringss = new String[5];
-		stringss[0] = "This is test data 1";
-		stringss[1] = "This is test data 2";
-		stringss[2] = "This is test data 3";
-		stringss[3] = "This is test data 4";
-		stringss[4] = data;
-		return stringss;
+	private String[] fetchLatestFeeds() {
+		EarthquakeCursor allEarthquakes = db.getEarthquakes();
+		ArrayList<String> earthquakeStrings = null;
+		try {
+			if(allEarthquakes != null && allEarthquakes.moveToFirst()) {
+				earthquakeStrings = new ArrayList<String>();
+				StringBuffer earthquakeInfo = null;
+				do {
+					earthquakeInfo = new StringBuffer();
+					earthquakeInfo.append(allEarthquakes.getIntensity());
+					earthquakeInfo.append("::");
+					earthquakeInfo.append(allEarthquakes.getLocation());
+					earthquakeStrings.add(earthquakeInfo.toString());
+				} while(allEarthquakes.moveToNext());
+			}
+		} finally {
+			allEarthquakes.close();
+		}
+		return earthquakeStrings.toArray(new String[earthquakeStrings.size()]);
 	}
 }
