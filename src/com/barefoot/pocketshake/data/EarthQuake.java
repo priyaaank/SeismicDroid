@@ -60,5 +60,18 @@ public class EarthQuake {
 	public String getTime() {
 		return time;
 	}
+	
+	@Override
+	public String toString() {
+		StringBuffer toReturn = new StringBuffer("");
+		toReturn.append(this.intensity);
+		toReturn.append("::");		
+		toReturn.append(this.location);
+		toReturn.append("::");
+		toReturn.append(this.longitude);
+		toReturn.append("::");
+		toReturn.append(this.latitude);
+		return toReturn.toString();
+	}
 }
 

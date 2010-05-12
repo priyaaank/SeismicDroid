@@ -78,10 +78,6 @@ public class FeedSynchronizer extends Service {
 		return binder;
 	}
 
-	synchronized public String getEarthquakeData() {
-		return (Integer.toString(earthQuakes.size()));
-	}
-
 	private void updateFeed() {
 		new FetchFeedTask().execute();
 	}

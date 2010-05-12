@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.barefoot.pocketshake.R;
 import com.barefoot.pocketshake.data.EarthQuake;
+import com.barefoot.pocketshake.exceptions.InvalidFeedException;
 
 public class EarthQuakeDatabase extends SQLiteOpenHelper {
 
@@ -73,6 +74,25 @@ public class EarthQuakeDatabase extends SQLiteOpenHelper {
 		public String getTime() {
 			return getString(getColumnIndexOrThrow("time"));
 		}
+
+		public EarthQuake getEarthQuake() {
+			EarthQuake earthquake = null;
+			try {
+				earthquake = new EarthQuake(
+						getString(getColumnIndexOrThrow("_id")), "M"
+								+ getString(getColumnIndexOrThrow("intensity"))
+								+ ", "
+								+ getString(getColumnIndexOrThrow("location")),
+						getString(getColumnIndexOrThrow("longitude")) + " "
+								+ getString(getColumnIndexOrThrow("latitude")),
+						getString(getColumnIndexOrThrow("date")) + "T"
+								+ getString(getColumnIndexOrThrow("time"))
+								+ "Z");
+			} catch (InvalidFeedException e) {
+				Log.e("Trying to return earthquake object", e.getMessage());
+			}
+			return earthquake;
+		}
 	}
 
 	private void executeManySqlStatements(SQLiteDatabase db, String[] sqls) {
@@ -126,28 +146,29 @@ public class EarthQuakeDatabase extends SQLiteOpenHelper {
 				new EarthquakeCursor.Factory(), EarthquakeCursor.QUERY, null,
 				null);
 	}
-	
-	public void saveNewEarthquakesOnly(EarthQuake[] earthqaukeFeed){
-		for(EarthQuake eachEarthQuake : earthqaukeFeed) {
-			if(!exists(eachEarthQuake)) {
+
+	public void saveNewEarthquakesOnly(EarthQuake[] earthqaukeFeed) {
+		for (EarthQuake eachEarthQuake : earthqaukeFeed) {
+			if (!exists(eachEarthQuake)) {
 				create(eachEarthQuake);
 			}
 		}
 	}
 
 	protected void create(EarthQuake eachEarthQuake) {
-		if(eachEarthQuake != null) {
+		if (eachEarthQuake != null) {
 			try {
 				getWritableDatabase().execSQL(getInsertQuery(eachEarthQuake));
-			} catch(SQLException e) {
+			} catch (SQLException e) {
 				Log.e("Creating new earthquake", e.getMessage());
 			}
 		}
-		
+
 	}
 
 	private String getInsertQuery(EarthQuake eachEarthQuake) {
-		StringBuffer insertQuery = new StringBuffer("Insert into earthquakes (intensity, location, longitude, latitude, time, date, _id) values (");
+		StringBuffer insertQuery = new StringBuffer(
+				"Insert into earthquakes (intensity, location, longitude, latitude, time, date, _id) values (");
 		insertQuery.append(databaseValue(eachEarthQuake.getIntensity()));
 		insertQuery.append(databaseValue(eachEarthQuake.getLocation()));
 		insertQuery.append(databaseValue(eachEarthQuake.getLongitude()));
@@ -156,30 +177,32 @@ public class EarthQuakeDatabase extends SQLiteOpenHelper {
 		insertQuery.append(databaseValue(eachEarthQuake.getDate()));
 		insertQuery.append("'" + eachEarthQuake.getId() + "'");
 		insertQuery.append(")");
-		
+
 		return insertQuery.toString();
 	}
 
 	private String databaseValue(String value) {
-		return value == null ? "null, " : "'" + value + "', "; 
+		return value == null ? "null, " : "'" + value + "', ";
 	}
 
 	public boolean exists(EarthQuake eachEarthQuake) {
-		if(eachEarthQuake != null) {
+		if (eachEarthQuake != null) {
 			Cursor c = null;
 			String count_query = "Select count(*) from earthquakes where _id = ?";
 			try {
-				c = getReadableDatabase().rawQuery(count_query, new String[] {eachEarthQuake.getId()});
-				if (c!=null && c.moveToFirst() && c.getInt(0) > 0)
+				c = getReadableDatabase().rawQuery(count_query,
+						new String[] { eachEarthQuake.getId() });
+				if (c != null && c.moveToFirst() && c.getInt(0) > 0)
 					return true;
-				
-			} catch(Exception e) {
+
+			} catch (Exception e) {
 				Log.e("Running Count Query", e.getMessage());
 			} finally {
-				if(c!=null) {
+				if (c != null) {
 					try {
 						c.close();
-					} catch (SQLException e) {}
+					} catch (SQLException e) {
+					}
 				}
 			}
 		}

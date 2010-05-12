@@ -6,7 +6,7 @@
     <application android:icon="@drawable/icon" android:label="@string/app_name">
     	<uses-library android:name="com.google.android.maps" />
     	<service android:name="com.barefoot.pocketshake.service.FeedSynchronizer"/>
-    	<activity android:name=".QuakeMapView" android:label="@string/app_name"
+    	<activity android:name=".QuakeMapView" android:label="@string/map_activity"
      		android:theme="@android:style/Theme.NoTitleBar">
      	</activity>
         <activity android:name=".PocketShake"

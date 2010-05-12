@@ -2,6 +2,7 @@
 <resources>
     <string name="feed_url">http://earthquake.usgs.gov/earthquakes/catalogs/1day-M2.5.xml</string>
     <string name="app_name">PocketShake</string>
+    <string name="map_activity">MapView</string>
     <string name="create_db_sql">
     CREATE TABLE EARTHQUAKES(_id String PRIMARY KEY, location String, intensity String, longitude String, latitude String, date String, time String);
     </string>
