@@ -24,6 +24,7 @@ public class PocketShake extends ListActivity {
 	private FeedSynchronizer appService=null;
 	private ArrayAdapter<String> messageListAdapter = null;
 	private EarthQuakeDatabase db;
+	private ArrayList<String> allEarthquakesList;
 	
     /** Called when the activity is first created. */
     @Override
@@ -40,7 +41,10 @@ public class PocketShake extends ListActivity {
     
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		//Do nothing for now
+		String eString = fetchCurrentQuakeDetails(position);
+		Intent intent = new Intent(PocketShake.this, QuakeMapView.class);
+		intent.putExtra("QUAKE_STRING", eString);
+        startActivity(intent);
 	}
     
     @Override
@@ -68,7 +72,7 @@ public class PocketShake extends ListActivity {
 	private void updateQuakeFeed() {
 		if (appService != null) {
 			String data = appService.getEarthquakeData();
-			messageListAdapter = new ArrayAdapter<String>(PocketShake.this, R.layout.quake, fetchLatestFeeds());
+			messageListAdapter = new ArrayAdapter<String>(PocketShake.this, R.layout.quake, fetchLatestFeeds(true));
 			setListAdapter(messageListAdapter);
 		}
 	}
@@ -89,24 +93,40 @@ public class PocketShake extends ListActivity {
 		}
 	};
 	
-	private String[] fetchLatestFeeds() {
+	private String[] fetchLatestFeeds(boolean forceFetch) {
+		if(allEarthquakesList == null || forceFetch) {
+			populateEarthquakeList();
+		}
+		return allEarthquakesList == null ? new String[0] : allEarthquakesList.toArray(new String[allEarthquakesList.size()]);
+	}
+	
+	private void populateEarthquakeList() {
 		EarthquakeCursor allEarthquakes = db.getEarthquakes();
-		ArrayList<String> earthquakeStrings = null;
 		try {
 			if(allEarthquakes != null && allEarthquakes.moveToFirst()) {
-				earthquakeStrings = new ArrayList<String>();
+				allEarthquakesList = new ArrayList<String>();
 				StringBuffer earthquakeInfo = null;
 				do {
 					earthquakeInfo = new StringBuffer();
 					earthquakeInfo.append(allEarthquakes.getIntensity());
 					earthquakeInfo.append("::");
 					earthquakeInfo.append(allEarthquakes.getLocation());
-					earthquakeStrings.add(earthquakeInfo.toString());
+					allEarthquakesList.add(earthquakeInfo.toString());
 				} while(allEarthquakes.moveToNext());
 			}
 		} finally {
 			allEarthquakes.close();
 		}
-		return earthquakeStrings.toArray(new String[earthquakeStrings.size()]);
+	}
+	
+	private String fetchCurrentQuakeDetails(int index) {
+		if(allEarthquakesList == null) {
+			populateEarthquakeList();
+		}
+		
+		if(allEarthquakesList.size() > index) {
+			return allEarthquakesList.get(index);
+		}
+		return null;
 	}
 }
