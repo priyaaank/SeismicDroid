@@ -27,9 +27,7 @@ public class PocketShake extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        
         dbWrapper = new EarthQuakeDataWrapper(this);
-        dbWrapper.refreshFeedCache(true);
         
         bindService(new Intent(this, FeedSynchronizer.class),
 				onService, BIND_AUTO_CREATE);
@@ -67,6 +65,7 @@ public class PocketShake extends ListActivity {
 	
 	private void updateQuakeFeed() {
 		if (appService != null) {
+			dbWrapper.refreshFeedCache(true);
 			messageListAdapter = new ArrayAdapter<String>(PocketShake.this, R.layout.quake, fetchLatestFeeds());
 			setListAdapter(messageListAdapter);
 		}

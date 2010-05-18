@@ -49,7 +49,7 @@ public class EarthQuakeDataWrapper {
 		return null;
 	}
 	
-	public void clearCache() {
+	public synchronized void clearCache() {
 		cachedEarthQuakeFeed.clear();
 	}
 }

@@ -14,8 +14,7 @@ public class EarthQuake {
 	
 	public EarthQuake(String id, String title, String cordinates, String dateTime) 
 	throws InvalidFeedException {
-		boolean exception = false;
-		
+
 		this.id = id;
 		
 		String[] intensityAndLocation = title.split(", ");

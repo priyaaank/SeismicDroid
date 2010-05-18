@@ -16,7 +16,17 @@
 				<category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>            
         </activity>
+        
+        <receiver android:name=".service.ServiceInvoker" 
+		 android:enabled="true" 
+		 android:exported="false"
+		 android:label="ServiceInvoker">
+		    <intent-filter>
+		        <action android:name="android.intent.action.BOOT_COMPLETED" />
+		    </intent-filter>
+		</receiver>
     </application>
+    
     <uses-sdk android:minSdkVersion="3" />
     <uses-permission android:name="android.permission.INTERNET"/>
 </manifest> 
