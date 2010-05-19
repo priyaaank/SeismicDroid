@@ -2,8 +2,6 @@ package com.barefoot.pocketshake.service;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -29,9 +27,7 @@ public class FeedSynchronizer extends Service {
 	private HttpClient client;
 	private String feedUrl;
 	private final Binder binder = new LocalBinder();
-	//private String earthquakeFeed;
 	private Intent broadcast=new Intent(BROADCAST_ACTION);
-	private Timer timer = new Timer();
 	private ArrayList<EarthQuake> earthQuakes = new ArrayList<EarthQuake>();
 	private QuakeFeedParser parser;
 	private EarthQuakeDatabase db;
@@ -43,33 +39,14 @@ public class FeedSynchronizer extends Service {
 		client = new DefaultHttpClient();
 		feedUrl = getString(R.string.feed_url);
 		db = new EarthQuakeDatabase(this);
-	
-		//startservice();		
+		
 		updateFeed();
-	}
-	
-	
-	private void startservice() {
-		timer.scheduleAtFixedRate( new TimerTask() {
-			public void run() {
-				updateFeed();
-			}
-		}, 0, 60000L);
-	}
-	
-	private void stopservice() {
-		if (timer != null){
-			timer.cancel();
-		}
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		db.close();
-//		if(timer != null) {
-//			stopservice();
-//		}
 		client.getConnectionManager().shutdown();
 	}
 
