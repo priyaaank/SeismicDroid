@@ -39,8 +39,12 @@ public class FeedSynchronizer extends Service {
 		client = new DefaultHttpClient();
 		feedUrl = getString(R.string.feed_url);
 		db = new EarthQuakeDatabase(this);
-		
+	}
+	
+	@Override
+	public int onStartCommand (Intent intent, int flags, int startId) {
 		updateFeed();
+		return START_NOT_STICKY;
 	}
 
 	@Override
