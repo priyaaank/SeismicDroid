@@ -9,7 +9,6 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import android.app.Service;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Binder;
@@ -21,7 +20,7 @@ import com.barefoot.pocketshake.data.EarthQuake;
 import com.barefoot.pocketshake.storage.EarthQuakeDatabase;
 import com.barefoot.pocketshake.workers.QuakeFeedParser;
 
-public class FeedSynchronizer extends Service {
+public class FeedSynchronizer extends SchedulableService {
 
 	public static final String BROADCAST_ACTION = "com.barefoot.pocketshake.service.FeedSynchronizer";
 	private HttpClient client;
@@ -31,22 +30,22 @@ public class FeedSynchronizer extends Service {
 	private ArrayList<EarthQuake> earthQuakes = new ArrayList<EarthQuake>();
 	private QuakeFeedParser parser;
 	private EarthQuakeDatabase db;
+
+	public FeedSynchronizer(String name) {
+		super("FeedSynchronizer");
+	}
+	
+	public FeedSynchronizer() {
+		this("FeedSynchronizer");
+	}
 	
 	@Override
 	public void onCreate() {
-		super.onCreate();
-
 		client = new DefaultHttpClient();
 		feedUrl = getString(R.string.feed_url);
 		db = new EarthQuakeDatabase(this);
 	}
 	
-	@Override
-	public int onStartCommand (Intent intent, int flags, int startId) {
-		updateFeed();
-		return START_NOT_STICKY;
-	}
-
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
@@ -108,4 +107,8 @@ public class FeedSynchronizer extends Service {
 		}
 	}
 
+	@Override
+	public void doServiceTask(Intent intent) {
+		updateFeed();
+	}
 }
