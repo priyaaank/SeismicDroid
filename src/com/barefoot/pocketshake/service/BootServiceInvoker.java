@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
+import android.util.Log;
 
 public class BootServiceInvoker extends BroadcastReceiver {
 	
@@ -13,6 +14,7 @@ public class BootServiceInvoker extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		Log.i("BootInvoker", "Received Boot Notification. Will start service and will do a recurring schedule");
 		AlarmManager mgr=(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 		Intent i=new Intent(context, OnAlarmReceiver.class);
 		PendingIntent pi=PendingIntent.getBroadcast(context, 0, i, 0);

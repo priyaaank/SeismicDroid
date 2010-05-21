@@ -1,5 +1,7 @@
 package com.barefoot.pocketshake.data;
 
+import android.util.Log;
+
 import com.barefoot.pocketshake.exceptions.InvalidFeedException;
 
 public class EarthQuake {
@@ -70,6 +72,7 @@ public class EarthQuake {
 		toReturn.append(this.longitude);
 		toReturn.append("::");
 		toReturn.append(this.latitude);
+		Log.v("EarthQuake String representation :: ",toReturn.toString());
 		return toReturn.toString();
 	}
 }

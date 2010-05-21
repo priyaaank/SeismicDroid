@@ -18,6 +18,7 @@ public class EarthQuakeDatabase extends SQLiteOpenHelper {
 
 	private static final String DATABASE_NAME = "PocketShake";
 	private static final int DATABASE_VERSION = 1;
+	private static final String LOG_TAG = "EarthQuakeDatabase";
 	private final Context mContext;
 
 	public EarthQuakeDatabase(Context context) {
@@ -140,6 +141,7 @@ public class EarthQuakeDatabase extends SQLiteOpenHelper {
 	}
 
 	public EarthquakeCursor getEarthquakes() {
+		Log.i(LOG_TAG, "Fetching earthquakes from database");
 		SQLiteDatabase db = getReadableDatabase();
 
 		return (EarthquakeCursor) db.rawQueryWithFactory(

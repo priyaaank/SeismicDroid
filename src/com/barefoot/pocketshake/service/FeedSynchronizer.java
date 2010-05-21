@@ -22,6 +22,7 @@ import com.barefoot.pocketshake.workers.QuakeFeedParser;
 public class FeedSynchronizer extends SchedulableService {
 
 	public static final String BROADCAST_ACTION = "com.barefoot.pocketshake.service.FeedSynchronizer.broadcast";
+	private static final String LOG_TAG = "FeedSynchronizerService";
 	private HttpClient client;
 	private String feedUrl;
 	private final Binder binder = new LocalBinder();
@@ -40,6 +41,7 @@ public class FeedSynchronizer extends SchedulableService {
 	
 	@Override
 	public void onCreate() {
+		Log.i(LOG_TAG,"Creating instance and opening earthquake database");
 		super.onCreate();
 		client = new DefaultHttpClient();
 		feedUrl = getString(R.string.feed_url);
@@ -49,6 +51,7 @@ public class FeedSynchronizer extends SchedulableService {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		Log.i(LOG_TAG,"Destroying instance and closing earthquake database");
 		db.close();
 		client.getConnectionManager().shutdown();
 	}
@@ -71,6 +74,7 @@ public class FeedSynchronizer extends SchedulableService {
 
 	@Override
 	public void doServiceTask(Intent intent) {
+		Log.i(LOG_TAG,"Executing Service Task");
 		HttpGet getMethod = new HttpGet(feedUrl);
 		HttpResponse response = null;
 
@@ -78,10 +82,12 @@ public class FeedSynchronizer extends SchedulableService {
 			response = client.execute(getMethod);
 			HttpEntity entity = response.getEntity();
 			ArrayList<EarthQuake> generateQuakes = generateQuakes(entity.getContent());
+			Log.i(LOG_TAG,"Parsing of XML done. Obtained "+generateQuakes.size()+" earthquake records");
 			synchronized(this) {
 				earthQuakes = generateQuakes;
 			}
 			
+			Log.i(LOG_TAG,"Saving enteries to database");
 			//save entries to database
 			db.saveNewEarthquakesOnly(earthQuakes.toArray(new EarthQuake[earthQuakes.size()]));
 			sendBroadcast(broadcast);
