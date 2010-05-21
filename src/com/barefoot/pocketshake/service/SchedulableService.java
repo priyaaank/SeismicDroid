@@ -32,7 +32,11 @@ abstract public class SchedulableService extends IntentService {
 	public abstract void doServiceTask(Intent intent);
 	
 	final protected void onHandleIntent(Intent intent) {
-		doServiceTask(intent);
-		getLock(this).release();
+		try {
+			doServiceTask(intent);
+		}
+		finally {
+			getLock(this).release();
+		}
 	}
 }

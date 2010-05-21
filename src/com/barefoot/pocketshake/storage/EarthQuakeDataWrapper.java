@@ -22,7 +22,6 @@ public class EarthQuakeDataWrapper {
 			try {
 				if(allEarthquakes != null && allEarthquakes.moveToFirst()) {
 					cachedEarthQuakeFeed.clear();
-					StringBuffer earthquakeInfo = null;
 					do {
 						cachedEarthQuakeFeed.add(allEarthquakes.getEarthQuake());
 					} while(allEarthquakes.moveToNext());
@@ -51,6 +50,14 @@ public class EarthQuakeDataWrapper {
 	
 	public synchronized void clearCache() {
 		cachedEarthQuakeFeed.clear();
+	}
+	
+	protected void finalize() throws Throwable {
+	    try {
+	        db.close();        // close database
+	    } finally {
+	        super.finalize();
+	    }
 	}
 }
 

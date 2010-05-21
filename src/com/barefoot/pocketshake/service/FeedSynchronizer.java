@@ -10,7 +10,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
@@ -32,7 +31,7 @@ public class FeedSynchronizer extends SchedulableService {
 	private EarthQuakeDatabase db;
 
 	public FeedSynchronizer(String name) {
-		super("FeedSynchronizer");
+		super(name);
 	}
 	
 	public FeedSynchronizer() {
@@ -41,11 +40,12 @@ public class FeedSynchronizer extends SchedulableService {
 	
 	@Override
 	public void onCreate() {
+		super.onCreate();
 		client = new DefaultHttpClient();
 		feedUrl = getString(R.string.feed_url);
 		db = new EarthQuakeDatabase(this);
 	}
-	
+		
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
@@ -56,10 +56,6 @@ public class FeedSynchronizer extends SchedulableService {
 	@Override
 	public IBinder onBind(Intent intent) {
 		return binder;
-	}
-
-	private void updateFeed() {
-		new FetchFeedTask().execute();
 	}
 
 	public class LocalBinder extends Binder {
@@ -73,42 +69,24 @@ public class FeedSynchronizer extends SchedulableService {
 		return parser.asParsedObject();
 	}
 
-	class FetchFeedTask extends AsyncTask<Void, Void, Void> {
-		@Override
-		protected Void doInBackground(Void... unused) {
-			HttpGet getMethod = new HttpGet(feedUrl);
-			HttpResponse response = null;
-
-			try {
-				response = client.execute(getMethod);
-				HttpEntity entity = response.getEntity();
-				ArrayList<EarthQuake> generateQuakes = generateQuakes(entity.getContent());
-				synchronized(this) {
-					earthQuakes = generateQuakes;
-				}
-				
-				//save entries to database
-				db.saveNewEarthquakesOnly(earthQuakes.toArray(new EarthQuake[earthQuakes.size()]));
-				sendBroadcast(broadcast);
-			} catch (Throwable t) {
-				Log.e("FetchingNSaving Earthquakes", t.getMessage());
-			}
-			return (null);
-		}
-
-		@Override
-		protected void onProgressUpdate(Void... unused) {
-			// not needed here
-		}
-
-		@Override
-		protected void onPostExecute(Void unused) {
-			// not needed here
-		}
-	}
-
 	@Override
 	public void doServiceTask(Intent intent) {
-		updateFeed();
+		HttpGet getMethod = new HttpGet(feedUrl);
+		HttpResponse response = null;
+
+		try {
+			response = client.execute(getMethod);
+			HttpEntity entity = response.getEntity();
+			ArrayList<EarthQuake> generateQuakes = generateQuakes(entity.getContent());
+			synchronized(this) {
+				earthQuakes = generateQuakes;
+			}
+			
+			//save entries to database
+			db.saveNewEarthquakesOnly(earthQuakes.toArray(new EarthQuake[earthQuakes.size()]));
+			sendBroadcast(broadcast);
+		} catch (Throwable t) {
+			Log.e("FetchingNSaving Earthquakes", t.getMessage());
+		}
 	}
 }
