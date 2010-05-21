@@ -21,7 +21,7 @@ import com.barefoot.pocketshake.workers.QuakeFeedParser;
 
 public class FeedSynchronizer extends SchedulableService {
 
-	public static final String BROADCAST_ACTION = "com.barefoot.pocketshake.service.FeedSynchronizer";
+	public static final String BROADCAST_ACTION = "com.barefoot.pocketshake.service.FeedSynchronizer.broadcast";
 	private HttpClient client;
 	private String feedUrl;
 	private final Binder binder = new LocalBinder();
