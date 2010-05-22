@@ -1,9 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView android:id="@+id/quakeInfo" xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="43px"
-    android:gravity="center_vertical"
-    android:textSize="10pt"
-    android:typeface="sans"
-    android:shadowColor = "#FFFFFF"
-    android:text = "dude"/>
+<LinearLayout
+	android:id="@+id/linear_layout_outer"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+>
+	<RelativeLayout
+		android:id="@+id/relative_layout_inner"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+	>
+		<TextView android:id="@+id/intensity_value" 
+			android:layout_height="wrap_content" 
+			android:layout_marginTop="2px" 
+			android:layout_marginBottom="2px" 
+			android:layout_marginLeft="2px" 
+			android:layout_marginRight="2px" 
+			android:text="" 
+			android:gravity="center" 
+			android:layout_alignParentTop="true" 
+			android:layout_alignParentLeft="true" 
+			android:textSize="37sp" 
+			android:layout_width="60dp">
+		</TextView>
+		<LinearLayout
+			android:id="@+id/linear_layout_inner"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:layout_alignParentTop="true"
+			android:layout_toRightOf="@+id/intensity_value" android:layout_marginLeft="15dp">
+			<TextView
+				android:id="@+id/location_value"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="2px"
+				android:layout_marginLeft="2px"
+				android:layout_marginRight="2px"
+				android:text=""
+				android:textSize="20sp"
+				android:gravity="left"
+				android:layout_gravity="left">
+			</TextView>
+			<TextView
+				android:id="@+id/date_of_occurance"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="2px"
+				android:layout_marginLeft="2px"
+				android:layout_marginRight="2px"
+				android:text=""
+				android:textSize="16sp"
+				android:gravity="left"
+				android:layout_gravity="left">
+			</TextView>
+		</LinearLayout>
+	</RelativeLayout>
+</LinearLayout>

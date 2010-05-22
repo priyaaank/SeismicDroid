@@ -1,5 +1,7 @@
 package com.barefoot.pocketshake;
 
+import java.util.ArrayList;
+
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -10,16 +12,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.barefoot.pocketshake.data.EarthQuake;
 import com.barefoot.pocketshake.service.FeedSynchronizer;
 import com.barefoot.pocketshake.storage.EarthQuakeDataWrapper;
 
 public class PocketShake extends ListActivity {
 	
-	private ArrayAdapter<String> messageListAdapter = null;
+	private QuakeCustomAdapter messageListAdapter = null;
 	private EarthQuakeDataWrapper dbWrapper;
 	private ProgressDialog dialog;
 	final private static String LOG_TAG = "Pocket Shake";
@@ -61,7 +63,7 @@ public class PocketShake extends ListActivity {
 		this.dialog.setMessage("Fetching...");
 		this.dialog.show();
 		dbWrapper.refreshFeedCache(true);
-		messageListAdapter = new ArrayAdapter<String>(PocketShake.this, R.layout.quake, fetchLatestFeeds());
+		messageListAdapter = new QuakeCustomAdapter(this, R.layout.quake, fetchLatestFeeds()); 
 		setListAdapter(messageListAdapter);
 		Log.i(LOG_TAG, "Message List Adapter fetched and set");
 		this.dialog.dismiss();
@@ -82,8 +84,8 @@ public class PocketShake extends ListActivity {
 		}
 	};
 	
-	private String[] fetchLatestFeeds() {
+	private ArrayList<EarthQuake> fetchLatestFeeds() {
 		Log.i(LOG_TAG, "Fetching string representation of quakes");
-		return dbWrapper.getStringRepresentationForQuakes();
+		return dbWrapper.getEarthQuakes();
 	}
 }

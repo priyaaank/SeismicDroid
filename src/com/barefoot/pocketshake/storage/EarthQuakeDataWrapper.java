@@ -34,15 +34,10 @@ public class EarthQuakeDataWrapper {
 			}
 		}
 	}
-
-	public String[] getStringRepresentationForQuakes() {
-		Log.i(LOG_TAG, "Creating string representation for earthquake feed for " +cachedEarthQuakeFeed.size()+" earthquakes");
-		ArrayList<String> stringRepresntation = new ArrayList<String>(cachedEarthQuakeFeed.size());
-		for(EarthQuake eachEarthquake : cachedEarthQuakeFeed) {
-			stringRepresntation.add(eachEarthquake.toString());
-		}
 	
-		return stringRepresntation.toArray(new String[stringRepresntation.size()]);
+	public ArrayList<EarthQuake> getEarthQuakes() {
+		Log.i(LOG_TAG, "Returning arraylist containing earthquake details");
+		return cachedEarthQuakeFeed;
 	}
 	
 	 public String getStringRepresentationForQuakeAtPosition(int index) {

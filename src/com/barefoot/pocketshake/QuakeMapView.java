@@ -51,7 +51,7 @@ public class QuakeMapView extends MapActivity {
 			String[] details = currentQuakeDetails.split("::");
 			Double longitude = Double.parseDouble(details[2]) * 10E5;
 			Double latitude = Double.parseDouble(details[3]) * 10E5;
-			Log.i("Longitude and Latitude :::: ", "Longitude ["+ longitude.intValue() +"], Latitude ["+latitude.intValue()+"]");
+			Log.i("Longitude and Latitude :: ", "Longitude ["+ longitude.intValue() +"], Latitude ["+latitude.intValue()+"]");
 			GeoPoint point = new GeoPoint(longitude.intValue(), latitude.intValue());
 			OverlayItem overlayitem = new OverlayItem(point, details[0] + " Richters", details[1]);
 			itemizedoverlay.addOverlay(overlayitem);

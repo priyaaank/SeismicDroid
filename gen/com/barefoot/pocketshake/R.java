@@ -15,9 +15,14 @@ public final class R {
         public static final int quake=0x7f020001;
     }
     public static final class id {
+        public static final int date_of_occurance=0x7f050008;
+        public static final int intensity_value=0x7f050005;
+        public static final int linear_layout_inner=0x7f050006;
+        public static final int linear_layout_outer=0x7f050003;
+        public static final int location_value=0x7f050007;
         public static final int mainlayout=0x7f050000;
         public static final int mapview=0x7f050001;
-        public static final int quakeInfo=0x7f050003;
+        public static final int relative_layout_inner=0x7f050004;
         public static final int zoomview=0x7f050002;
     }
     public static final class layout {
