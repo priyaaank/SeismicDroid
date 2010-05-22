@@ -28,8 +28,8 @@ public class EarthQuakeDatabase extends SQLiteOpenHelper {
 
 	public static class EarthquakeCursor extends SQLiteCursor {
 		/** The query for this cursor */
-		private static final String QUERY = "SELECT _id, location, intensity, longitude, latitude, date, time "
-				+ "FROM earthquakes " + "ORDER BY date";
+		private static final String QUERY = "SELECT _id, location, intensity, longitude, latitude, datetime "
+				+ "FROM earthquakes " + "ORDER BY datetime desc";
 
 		/** Cursor constructor */
 		private EarthquakeCursor(SQLiteDatabase db, SQLiteCursorDriver driver,
@@ -69,11 +69,7 @@ public class EarthQuakeDatabase extends SQLiteOpenHelper {
 		}
 
 		public String getDate() {
-			return getString(getColumnIndexOrThrow("date"));
-		}
-
-		public String getTime() {
-			return getString(getColumnIndexOrThrow("time"));
+			return getString(getColumnIndexOrThrow("datetime"));
 		}
 
 		public EarthQuake getEarthQuake() {
@@ -86,9 +82,7 @@ public class EarthQuakeDatabase extends SQLiteOpenHelper {
 								+ getString(getColumnIndexOrThrow("location")),
 						getString(getColumnIndexOrThrow("longitude")) + " "
 								+ getString(getColumnIndexOrThrow("latitude")),
-						getString(getColumnIndexOrThrow("date")) + "T"
-								+ getString(getColumnIndexOrThrow("time"))
-								+ "Z");
+						getString(getColumnIndexOrThrow("datetime")));
 			} catch (InvalidFeedException e) {
 				Log.e("Trying to return earthquake object", e.getMessage());
 			}
@@ -170,12 +164,11 @@ public class EarthQuakeDatabase extends SQLiteOpenHelper {
 
 	private String getInsertQuery(EarthQuake eachEarthQuake) {
 		StringBuffer insertQuery = new StringBuffer(
-				"Insert into earthquakes (intensity, location, longitude, latitude, time, date, _id) values (");
+				"Insert into earthquakes (intensity, location, longitude, latitude, datetime, _id) values (");
 		insertQuery.append(databaseValue(eachEarthQuake.getIntensity()));
 		insertQuery.append(databaseValue(eachEarthQuake.getLocation()));
 		insertQuery.append(databaseValue(eachEarthQuake.getLongitude()));
 		insertQuery.append(databaseValue(eachEarthQuake.getLatitude()));
-		insertQuery.append(databaseValue(eachEarthQuake.getTime()));
 		insertQuery.append(databaseValue(eachEarthQuake.getDate()));
 		insertQuery.append("'" + eachEarthQuake.getId() + "'");
 		insertQuery.append(")");

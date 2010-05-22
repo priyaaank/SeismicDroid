@@ -1,5 +1,9 @@
 package com.barefoot.pocketshake.data;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import android.util.Log;
 
 import com.barefoot.pocketshake.exceptions.InvalidFeedException;
@@ -12,11 +16,12 @@ public class EarthQuake {
 	private String location;
 	private String intensity;
 	private String date;
-	private String time;
+	
+	private static String convertFrom = "yyyy-MM-dd HH:mm:ss";
+	private static String convertTo = "dd-MM-yyyy HH:mm:ss";
 	
 	public EarthQuake(String id, String title, String cordinates, String dateTime) 
 	throws InvalidFeedException {
-
 		this.id = id;
 		
 		String[] intensityAndLocation = title.split(", ");
@@ -28,10 +33,7 @@ public class EarthQuake {
 		this.latitude = latitudeNLongitude[0].trim();
 		this.longitude = latitudeNLongitude[1].trim();
 		
-		String[] dateNTime = dateTime.split("T");
-		this.date = dateNTime[0].trim();
-		this.time = dateNTime[1].trim();
-		this.time = time.replace("Z", "").trim();
+		this.date = dateTime;
 	}
 
 	public String getId() {
@@ -57,9 +59,24 @@ public class EarthQuake {
 	public String getDate() {
 		return date;
 	}
-	
-	public String getTime() {
-		return time;
+
+	public String getDisplayDate() {
+		Date dateToConvert = null;
+		String dateToReturn = this.date;
+		SimpleDateFormat dateFormatter = new SimpleDateFormat(convertFrom);
+		try {
+			if(null != dateToReturn) {
+				dateToReturn = dateToReturn.replace("T", " ");
+				dateToReturn = dateToReturn.replace("Z", "");
+				dateToConvert = dateFormatter.parse(dateToReturn);
+				dateFormatter = new SimpleDateFormat(convertTo);
+				dateToReturn = dateFormatter.format(dateToConvert);
+				dateToReturn = dateToReturn + " UTC";
+			}
+		} catch (ParseException e) {
+			Log.e("Tried Parsing date string.",e.getMessage());
+		}
+		return dateToReturn;
 	}
 	
 	@Override

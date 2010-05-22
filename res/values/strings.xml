@@ -4,7 +4,7 @@
     <string name="app_name">PocketShake</string>
     <string name="map_activity">MapView</string>
     <string name="create_db_sql">
-    CREATE TABLE EARTHQUAKES(_id String PRIMARY KEY, location String, intensity String, longitude String, latitude String, date String, time String);
+    CREATE TABLE EARTHQUAKES(_id String PRIMARY KEY, location String, intensity String, longitude String, latitude String, datetime Date);
     </string>
     <string name="upgrade_db_sql">
     DROP TABLE EARTHQUAKES;
