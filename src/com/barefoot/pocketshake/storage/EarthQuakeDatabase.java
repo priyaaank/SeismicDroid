@@ -1,5 +1,6 @@
 package com.barefoot.pocketshake.storage;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -154,30 +155,19 @@ public class EarthQuakeDatabase extends SQLiteOpenHelper {
 	protected void create(EarthQuake eachEarthQuake) {
 		if (eachEarthQuake != null) {
 			try {
-				getWritableDatabase().execSQL(getInsertQuery(eachEarthQuake));
+				ContentValues dbValues = new ContentValues();
+				dbValues.put("_id", eachEarthQuake.getId());
+				dbValues.put("intensity", eachEarthQuake.getIntensity());
+				dbValues.put("location", eachEarthQuake.getLocation());
+				dbValues.put("longitude", eachEarthQuake.getLongitude());
+				dbValues.put("latitude", eachEarthQuake.getLatitude());
+				dbValues.put("datetime", eachEarthQuake.getDate());
+				getWritableDatabase().insertOrThrow("earthquakes", "datetime", dbValues);
 			} catch (SQLException e) {
 				Log.e("Creating new earthquake", e.getMessage());
 			}
 		}
 
-	}
-
-	private String getInsertQuery(EarthQuake eachEarthQuake) {
-		StringBuffer insertQuery = new StringBuffer(
-				"Insert into earthquakes (intensity, location, longitude, latitude, datetime, _id) values (");
-		insertQuery.append(databaseValue(eachEarthQuake.getIntensity()));
-		insertQuery.append(databaseValue(eachEarthQuake.getLocation()));
-		insertQuery.append(databaseValue(eachEarthQuake.getLongitude()));
-		insertQuery.append(databaseValue(eachEarthQuake.getLatitude()));
-		insertQuery.append(databaseValue(eachEarthQuake.getDate()));
-		insertQuery.append("'" + eachEarthQuake.getId() + "'");
-		insertQuery.append(")");
-
-		return insertQuery.toString();
-	}
-
-	private String databaseValue(String value) {
-		return value == null ? "null, " : "'" + value + "', ";
 	}
 
 	public boolean exists(EarthQuake eachEarthQuake) {
