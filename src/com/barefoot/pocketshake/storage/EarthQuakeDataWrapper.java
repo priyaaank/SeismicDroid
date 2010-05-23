@@ -40,9 +40,9 @@ public class EarthQuakeDataWrapper {
 		return cachedEarthQuakeFeed;
 	}
 	
-	 public String getStringRepresentationForQuakeAtPosition(int index) {
+	 public EarthQuake getQuakeAtPosition(int index) {
 		 if (index <= cachedEarthQuakeFeed.size()) {
-			 return cachedEarthQuakeFeed.get(index).toString();
+			 return cachedEarthQuakeFeed.get(index);
 		 }
 		 return null;
 	 }

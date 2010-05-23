@@ -32,8 +32,10 @@ public class PocketShake extends ListActivity {
     	Log.i(LOG_TAG, "Creating an instance of activity");
         setContentView(R.layout.main);
         this.dialog = new ProgressDialog(this);
+        this.dialog.setMessage("Fetching...");
         dbWrapper = new EarthQuakeDataWrapper(this);
         updateQuakeFeed();
+        this.dialog.dismiss();
     }
     
 	@Override
@@ -60,13 +62,11 @@ public class PocketShake extends ListActivity {
 	
 	private void updateQuakeFeed() {
 		Log.i(LOG_TAG, "Updating Quake Feed");
-		this.dialog.setMessage("Fetching...");
 		this.dialog.show();
 		dbWrapper.refreshFeedCache(true);
 		messageListAdapter = new QuakeCustomAdapter(this, R.layout.quake, fetchLatestFeeds()); 
 		setListAdapter(messageListAdapter);
 		Log.i(LOG_TAG, "Message List Adapter fetched and set");
-		this.dialog.dismiss();
 		showUpdateIndication();
 	}
 	
