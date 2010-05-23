@@ -19,7 +19,7 @@ public class QuakeItemizedMapOverlay extends ItemizedOverlay {
 	}
 	
 	public QuakeItemizedMapOverlay(Drawable defaultMarker, Context context) {
-		  super(defaultMarker);
+		  this(defaultMarker);
 		  mContext = context;
 		}
 
@@ -47,7 +47,4 @@ public class QuakeItemizedMapOverlay extends ItemizedOverlay {
 	  dialog.show();
 	  return true;
 	}
-	
-	
-
 }
