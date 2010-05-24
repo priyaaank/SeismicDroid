@@ -14,6 +14,7 @@ import com.barefoot.pocketshake.data.EarthQuake;
 public class QuakeCustomAdapter extends ArrayAdapter<EarthQuake> {
 
 	private ArrayList<EarthQuake> quakeList = new ArrayList<EarthQuake>();
+	private int[] intensityColorArray = new int[] {R.drawable.green, R.drawable.yellow, R.drawable.orange, R.drawable.red}; 
 
 	public QuakeCustomAdapter(Context context, int textViewResourceId, ArrayList<EarthQuake> quakes) {
         super(context, textViewResourceId, quakes);
@@ -36,7 +37,7 @@ public class QuakeCustomAdapter extends ArrayAdapter<EarthQuake> {
 			
 			if(intensity != null) {
 				intensity.setText(eachQuake.getIntensity());
-				intensity.setBackgroundResource(R.drawable.test);
+				intensity.setBackgroundResource(getBackgroundColor(eachQuake.getIntensity()));
 			}
 			if(location != null) {
 				location.setText(eachQuake.getLocation());
@@ -49,6 +50,13 @@ public class QuakeCustomAdapter extends ArrayAdapter<EarthQuake> {
 	}
 
 	private int getBackgroundColor(String intensity) {
-		return R.color.intense_red;
+		double doubleIntensity = Double.parseDouble(intensity);
+		if(doubleIntensity < 3.5)
+			return intensityColorArray[0];
+		if(doubleIntensity >= 3.5 && doubleIntensity < 5.5)
+			return intensityColorArray[1];
+		if(doubleIntensity >= 5.5 && doubleIntensity < 6.5)
+			return intensityColorArray[2];
+		return intensityColorArray[3];
 	}
 }
