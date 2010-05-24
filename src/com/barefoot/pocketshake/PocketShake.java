@@ -38,6 +38,7 @@ public class PocketShake extends ListActivity {
         setContentView(R.layout.main);
         this.dialog = new ProgressDialog(this);
         this.dialog.setMessage("Fetching...");
+        this.dialog.show();
         dbWrapper = new EarthQuakeDataWrapper(this);
         updateQuakeFeed();
         this.dialog.dismiss();
@@ -85,7 +86,6 @@ public class PocketShake extends ListActivity {
 	
 	private void updateQuakeFeed() {
 		Log.i(LOG_TAG, "Updating Quake Feed");
-		this.dialog.show();
 		dbWrapper.refreshFeedCache(true);
 		messageListAdapter = new QuakeCustomAdapter(this, R.layout.quake, fetchLatestFeeds()); 
 		setListAdapter(messageListAdapter);

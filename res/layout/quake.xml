@@ -22,7 +22,8 @@
 			android:layout_alignParentTop="true" 
 			android:layout_alignParentLeft="true" 
 			android:textSize="37sp" 
-			android:layout_width="60dp">
+			android:layout_width="60dp"
+			android:textColor="#FFFFFF">
 		</TextView>
 		<LinearLayout
 			android:id="@+id/linear_layout_inner"

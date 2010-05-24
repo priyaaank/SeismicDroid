@@ -36,6 +36,7 @@ public class QuakeCustomAdapter extends ArrayAdapter<EarthQuake> {
 			
 			if(intensity != null) {
 				intensity.setText(eachQuake.getIntensity());
+				intensity.setBackgroundResource(R.drawable.test);
 			}
 			if(location != null) {
 				location.setText(eachQuake.getLocation());
@@ -45,5 +46,9 @@ public class QuakeCustomAdapter extends ArrayAdapter<EarthQuake> {
 			}
 		}
 		return v;
+	}
+
+	private int getBackgroundColor(String intensity) {
+		return R.color.intense_red;
 	}
 }
