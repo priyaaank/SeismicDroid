@@ -43,7 +43,7 @@ public class QuakeCustomAdapter extends ArrayAdapter<EarthQuake> {
 				location.setText(eachQuake.getLocation());
 			}
 			if(date != null) {
-				date.setText(eachQuake.getDisplayDate());
+				date.setText(eachQuake.getLocalTime());
 			}
 		}
 		return v;

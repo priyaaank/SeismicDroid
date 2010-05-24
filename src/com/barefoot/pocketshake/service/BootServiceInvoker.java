@@ -15,6 +15,10 @@ public class BootServiceInvoker extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		Log.i("BootInvoker", "Received Boot Notification. Will start service and will do a recurring schedule");
+		scheduleService(context);
+	}
+
+	private void scheduleService(Context context) {
 		AlarmManager mgr=(AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 		Intent i=new Intent(context, OnAlarmReceiver.class);
 		PendingIntent pi=PendingIntent.getBroadcast(context, 0, i, 0);

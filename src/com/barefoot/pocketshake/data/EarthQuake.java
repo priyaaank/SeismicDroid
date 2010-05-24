@@ -1,9 +1,6 @@
 package com.barefoot.pocketshake.data;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
+import android.text.format.Time;
 import android.util.Log;
 
 import com.barefoot.pocketshake.exceptions.InvalidFeedException;
@@ -17,8 +14,7 @@ public class EarthQuake {
 	private String intensity;
 	private String date;
 	
-	private static String convertFrom = "yyyy-MM-dd HH:mm:ss";
-	private static String convertTo = "dd-MM-yyyy HH:mm:ss";
+	private static String localtimezone = new Time().timezone;
 	
 	public EarthQuake(String id, String title, String cordinates, String dateTime) 
 	throws InvalidFeedException {
@@ -60,25 +56,6 @@ public class EarthQuake {
 		return date;
 	}
 
-	public String getDisplayDate() {
-		Date dateToConvert = null;
-		String dateToReturn = this.date;
-		SimpleDateFormat dateFormatter = new SimpleDateFormat(convertFrom);
-		try {
-			if(null != dateToReturn) {
-				dateToReturn = dateToReturn.replace("T", " ");
-				dateToReturn = dateToReturn.replace("Z", "");
-				dateToConvert = dateFormatter.parse(dateToReturn);
-				dateFormatter = new SimpleDateFormat(convertTo);
-				dateToReturn = dateFormatter.format(dateToConvert);
-				dateToReturn = dateToReturn + " UTC";
-			}
-		} catch (ParseException e) {
-			Log.e("Tried Parsing date string.",e.getMessage());
-		}
-		return dateToReturn;
-	}
-	
 	public int getMicroLatitudes() {
 		if(null != this.getLatitude()) {
 			Double value = Double.parseDouble(this.getLatitude()) * 10E5;
@@ -93,6 +70,13 @@ public class EarthQuake {
 			return value.intValue();
 		}
 		return 0;
+	}
+	
+	public String getLocalTime() {
+		Time newTime = new Time("UTC");
+		newTime.parse3339(getDate());
+		newTime.switchTimezone(localtimezone);
+		return  newTime.format("%d-%b-%Y %H:%M:%S");
 	}
 	
 	@Override
