@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android">
+  
+   <PreferenceCategory android:title="Notifications">
+        <CheckBoxPreference
+                android:key="Show_Notifications"
+                android:title="Notifications"
+                android:defaultValue="true"
+                android:summary="Show notifications on home for earthquake alerts" />
+                
+        <CheckBoxPreference
+                android:key="Vibrate_phone"
+                android:title="Vibrate"
+                android:defaultValue="true"
+                android:summary="Vibrate device when earthquake information is received" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="Frequency">
+    	<EditTextPreference  android:dialogTitle="Frequency Value"
+                             android:dialogMessage="Enter Number"
+                             android:key="lag_duration"
+                             android:title="Number"
+                             android:summary="Duration between successive check is made for Earthquake information"
+                             android:defaultValue="test"/>
+    </PreferenceCategory>
+</PreferenceScreen>
