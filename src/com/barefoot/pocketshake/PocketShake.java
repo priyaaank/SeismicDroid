@@ -29,7 +29,8 @@ public class PocketShake extends ListActivity {
 	final private static String LOG_TAG = "Pocket Shake";
 	
 	private final static int SETTINGS = 1;
-	private final static int CANCEL = 2;
+	private final static int ABOUT = 2;
+	private final static int CANCEL = 3;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,7 +68,8 @@ public class PocketShake extends ListActivity {
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
-	    menu.add(0, SETTINGS, 0, "Settings").setIcon(R.drawable.settings);
+		menu.add(0, SETTINGS, 0, "Settings").setIcon(R.drawable.settings);
+	    menu.add(0, ABOUT, 0, "About").setIcon(R.drawable.about);
 	    menu.add(0, CANCEL, 0, "Quit").setIcon(R.drawable.cancel);
 	    return true;
 	}
@@ -78,6 +80,8 @@ public class PocketShake extends ListActivity {
 	    	Intent newIntent = new Intent(this, QuakePrefrences.class);
 	    	startActivity(newIntent);
 	        return true;
+	    case ABOUT:
+	    	return true;
 	    case CANCEL:
 	        return true;
 	    }
