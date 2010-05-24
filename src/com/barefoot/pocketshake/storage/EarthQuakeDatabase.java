@@ -146,9 +146,12 @@ public class EarthQuakeDatabase extends SQLiteOpenHelper {
 
 	public void saveNewEarthquakesOnly(EarthQuake[] earthqaukeFeed) {
 		for (EarthQuake eachEarthQuake : earthqaukeFeed) {
-			if (!exists(eachEarthQuake)) {
-				create(eachEarthQuake);
+			if (exists(eachEarthQuake)) {
+				Log.w(LOG_TAG,"Breaking creation loop as current element exists; rest of the enteries are assumed to exist");
+				//If current id exists rest would exist anyway.
+				break;
 			}
+			create(eachEarthQuake);
 		}
 	}
 

@@ -23,7 +23,14 @@
                              android:title="Number"
                              android:summary="Duration between successive check is made for Earthquake information"
                              android:defaultValue="test"/>
-
+		
+		 <ListPreference
+           android:title="Time Unit"
+           android:summary="Choose unit of selected time from seconds, minutes and hours"
+           android:key="time_freq_unit"
+           android:defaultValue="60"
+           android:entries="@array/time"
+           android:entryValues="@array/time_values" />
     </PreferenceCategory>
 </PreferenceScreen>
 

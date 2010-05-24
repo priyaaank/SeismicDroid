@@ -8,6 +8,10 @@
 package com.barefoot.pocketshake;
 
 public final class R {
+    public static final class array {
+        public static final int time=0x7f070000;
+        public static final int time_values=0x7f070001;
+    }
     public static final class attr {
     }
     public static final class color {
@@ -24,15 +28,15 @@ public final class R {
         public static final int yellow=0x7f020007;
     }
     public static final class id {
-        public static final int date_of_occurance=0x7f070008;
-        public static final int intensity_value=0x7f070005;
-        public static final int linear_layout_inner=0x7f070006;
-        public static final int linear_layout_outer=0x7f070003;
-        public static final int location_value=0x7f070007;
-        public static final int mainlayout=0x7f070000;
-        public static final int mapview=0x7f070001;
-        public static final int relative_layout_inner=0x7f070004;
-        public static final int zoomview=0x7f070002;
+        public static final int date_of_occurance=0x7f080008;
+        public static final int intensity_value=0x7f080005;
+        public static final int linear_layout_inner=0x7f080006;
+        public static final int linear_layout_outer=0x7f080003;
+        public static final int location_value=0x7f080007;
+        public static final int mainlayout=0x7f080000;
+        public static final int mapview=0x7f080001;
+        public static final int relative_layout_inner=0x7f080004;
+        public static final int zoomview=0x7f080002;
     }
     public static final class layout {
         public static final int main=0x7f030000;
@@ -49,6 +53,5 @@ public final class R {
     }
     public static final class xml {
         public static final int pref=0x7f040000;
-        public static final int time=0x7f040001;
     }
 }
