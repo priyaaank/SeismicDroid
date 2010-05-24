@@ -11,6 +11,8 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -25,6 +27,9 @@ public class PocketShake extends ListActivity {
 	private EarthQuakeDataWrapper dbWrapper;
 	private ProgressDialog dialog;
 	final private static String LOG_TAG = "Pocket Shake";
+	
+	private final static int SETTINGS = 1;
+	private final static int CANCEL = 2;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +63,24 @@ public class PocketShake extends ListActivity {
 		Log.i(LOG_TAG, "Pausing activity, unregistering with background service for broadcasts");
 		super.onPause();
 		unregisterReceiver(receiver);
+	}
+	
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    menu.add(0, SETTINGS, 0, "Settings").setIcon(R.drawable.settings);
+	    menu.add(0, CANCEL, 0, "Quit").setIcon(R.drawable.cancel);
+	    return true;
+	}
+	
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	    case SETTINGS:
+	    	Intent newIntent = new Intent(this, QuakePrefrences.class);
+	    	startActivity(newIntent);
+	        return true;
+	    case CANCEL:
+	        return true;
+	    }
+	    return false;
 	}
 	
 	private void updateQuakeFeed() {

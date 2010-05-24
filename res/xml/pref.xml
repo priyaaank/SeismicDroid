@@ -23,5 +23,7 @@
                              android:title="Number"
                              android:summary="Duration between successive check is made for Earthquake information"
                              android:defaultValue="test"/>
+
     </PreferenceCategory>
 </PreferenceScreen>
+
