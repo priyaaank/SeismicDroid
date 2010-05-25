@@ -196,4 +196,10 @@ public class EarthQuakeDatabase extends SQLiteOpenHelper {
 		}
 		return false;
 	}
+
+	public void deleteRecordsOlderThanDays(int purgeDay) {
+		if(purgeDay > 0) {
+			getWritableDatabase().delete("earthquakes", " (strftime('%J','now','UTC') - strftime('%J',datetime, UTC)) > ? ", new String[]{Integer.toString(purgeDay)});
+		}
+	}
 }

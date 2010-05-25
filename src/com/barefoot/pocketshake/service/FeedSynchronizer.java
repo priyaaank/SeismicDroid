@@ -10,8 +10,10 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Binder;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.barefoot.pocketshake.R;
@@ -77,7 +79,10 @@ public class FeedSynchronizer extends SchedulableService {
 		Log.i(LOG_TAG,"Executing Service Task");
 		HttpGet getMethod = new HttpGet(feedUrl);
 		HttpResponse response = null;
-
+		
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+		int purge_day = sharedPref.getInt("purge_day", 30);
+		
 		try {
 			response = client.execute(getMethod);
 			HttpEntity entity = response.getEntity();
@@ -90,6 +95,7 @@ public class FeedSynchronizer extends SchedulableService {
 			Log.i(LOG_TAG,"Saving enteries to database");
 			//save entries to database
 			db.saveNewEarthquakesOnly(earthQuakes.toArray(new EarthQuake[earthQuakes.size()]));
+			db.deleteRecordsOlderThanDays(purge_day);
 			sendBroadcast(broadcast);
 		} catch (Throwable t) {
 			Log.e("FetchingNSaving Earthquakes", t.getMessage());

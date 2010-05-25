@@ -41,11 +41,18 @@
     </PreferenceCategory>
     
     <PreferenceCategory android:title="Storage">
+    	<ListPreference
+           android:title="Time Unit"
+           android:summary="Choose unit of selected time from seconds, minutes and hours"
+           android:key="purge_day"
+           android:defaultValue="30"
+           android:entries="@array/days"
+           android:entryValues="@array/days_values" />
     	<EditTextPreference  android:dialogTitle="Records Limit"
                              android:dialogMessage="Records Limit"
-                             android:key="max_records"
+                             android:key="purge_day"
                              android:title="Number"
-                             android:summary="Store a maximum of specified number of earthquake entries. Older entries will be deleted."
+                             android:summary="Store a maximum of specified number of earthquake entries. Older entries will be deleted"
                              android:defaultValue="200"/>
     </PreferenceCategory>
 </PreferenceScreen>
