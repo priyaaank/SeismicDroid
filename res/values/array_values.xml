@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="time">
+        <item>Seconds</item>
+        <item>Minutes</item>
+        <item>Hours</item>
+    </string-array>
+    
+    <string-array name="time_values">
+        <item>3600</item>
+        <item>60</item>
+        <item>1</item>
+    </string-array>
+
+    <string-array name="days">
+        <item>1 Day</item>
+        <item>2 Days</item>
+        <item>1 Week</item>
+        <item>2 Week</item>
+        <item>1 Month</item>
+        <item>2 Months</item>
+        <item>6 Months</item>
+        <item>1 Year</item>
+    </string-array>
+    
+    <string-array name="days_values">
+        <item>1</item>
+        <item>2</item>
+        <item>7</item>
+        <item>14</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>365</item>
+    </string-array>
+</resources>

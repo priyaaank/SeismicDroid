@@ -81,7 +81,7 @@ public class FeedSynchronizer extends SchedulableService {
 		HttpResponse response = null;
 		
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-		int purge_day = sharedPref.getInt("purge_day", 30);
+		String purge_day = sharedPref.getString("purge_day", "30");
 		
 		try {
 			response = client.execute(getMethod);

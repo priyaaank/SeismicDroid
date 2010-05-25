@@ -197,9 +197,14 @@ public class EarthQuakeDatabase extends SQLiteOpenHelper {
 		return false;
 	}
 
-	public void deleteRecordsOlderThanDays(int purgeDay) {
-		if(purgeDay > 0) {
-			getWritableDatabase().delete("earthquakes", " (strftime('%J','now','UTC') - strftime('%J',datetime, UTC)) > ? ", new String[]{Integer.toString(purgeDay)});
+	public void deleteRecordsOlderThanDays(String purgeDay) {
+		if(purgeDay != null) {
+			try {
+				int num = getWritableDatabase().delete("earthquakes", " (strftime('%J','now','UTC') - strftime('%J',datetime, 'UTC')) > " + purgeDay, null);
+				Log.i("Cleaning up old records in database", num + " records deleted successfully");
+			} catch(SQLException e) {
+				Log.e("Tried Cleaning up old data from database",e.getMessage());
+			}
 		}
 	}
 }
