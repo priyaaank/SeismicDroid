@@ -4,6 +4,7 @@ import android.text.format.Time;
 import android.util.Log;
 
 import com.barefoot.pocketshake.exceptions.InvalidFeedException;
+import com.barefoot.pocketshake.utils.StringUtils;
 
 public class EarthQuake {
 	
@@ -45,7 +46,7 @@ public class EarthQuake {
 	}
 	
 	public String getLocation() {
-		return location;
+		return StringUtils.camelCase(location);
 	}
 	
 	public String getIntensity() {
