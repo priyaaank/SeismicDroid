@@ -24,13 +24,6 @@
     </PreferenceCategory>
     
     <PreferenceCategory android:title="Frequency">
-    	<EditTextPreference  android:dialogTitle="Frequency Value"
-                             android:dialogMessage="Frequency Lag"
-                             android:key="lag_duration"
-                             android:title="Number"
-                             android:summary="Duration between successive check is made for Earthquake information"
-                             android:defaultValue="test"/>
-		
 		 <ListPreference
            android:title="Time Unit"
            android:summary="Choose unit of selected time from seconds, minutes and hours"

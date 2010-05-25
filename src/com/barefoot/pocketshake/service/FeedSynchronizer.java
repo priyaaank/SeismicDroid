@@ -32,6 +32,8 @@ public class FeedSynchronizer extends SchedulableService {
 	private ArrayList<EarthQuake> earthQuakes = new ArrayList<EarthQuake>();
 	private QuakeFeedParser parser;
 	private EarthQuakeDatabase db;
+	
+	private static boolean running = false;
 
 	public FeedSynchronizer(String name) {
 		super(name);
@@ -76,29 +78,35 @@ public class FeedSynchronizer extends SchedulableService {
 
 	@Override
 	public void doServiceTask(Intent intent) {
-		Log.i(LOG_TAG,"Executing Service Task");
-		HttpGet getMethod = new HttpGet(feedUrl);
-		HttpResponse response = null;
-		
-		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-		String purge_day = sharedPref.getString("purge_day", "30");
-		
-		try {
-			response = client.execute(getMethod);
-			HttpEntity entity = response.getEntity();
-			ArrayList<EarthQuake> generateQuakes = generateQuakes(entity.getContent());
-			Log.i(LOG_TAG,"Parsing of XML done. Obtained "+generateQuakes.size()+" earthquake records");
-			synchronized(this) {
-				earthQuakes = generateQuakes;
-			}
+		if(!running) {
+			running = true;
+			Log.i(LOG_TAG,"Executing Service Task");
+			HttpGet getMethod = new HttpGet(feedUrl);
+			HttpResponse response = null;
 			
-			Log.i(LOG_TAG,"Saving enteries to database");
-			//save entries to database
-			db.saveNewEarthquakesOnly(earthQuakes.toArray(new EarthQuake[earthQuakes.size()]));
-			db.deleteRecordsOlderThanDays(purge_day);
-			sendBroadcast(broadcast);
-		} catch (Throwable t) {
-			Log.e("FetchingNSaving Earthquakes", t.getMessage());
+			SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+			String purge_day = sharedPref.getString("purge_day", "30");
+			
+			try {
+				response = client.execute(getMethod);
+				HttpEntity entity = response.getEntity();
+				ArrayList<EarthQuake> generateQuakes = generateQuakes(entity.getContent());
+				Log.i(LOG_TAG,"Parsing of XML done. Obtained "+generateQuakes.size()+" earthquake records");
+				synchronized(earthQuakes) {
+					earthQuakes = generateQuakes;
+				}
+				
+				Log.i(LOG_TAG,"Saving enteries to database");
+				//save entries to database
+				db.saveNewEarthquakesOnly(earthQuakes.toArray(new EarthQuake[earthQuakes.size()]));
+				db.deleteRecordsOlderThanDays(purge_day);
+				sendBroadcast(broadcast);
+			} catch (Throwable t) {
+				Log.e("FetchingNSaving Earthquakes", t.getMessage());
+			}
+			finally {
+				running = false;
+			}
 		}
 	}
 }
