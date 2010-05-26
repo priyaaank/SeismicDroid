@@ -4,29 +4,41 @@
   
    <PreferenceCategory android:title="Notifications">
         <CheckBoxPreference
-                android:key="Show_Notifications"
+                android:key="show_notifications"
                 android:title="Notifications"
                 android:defaultValue="true"
                 android:summary="Show notifications on home for earthquake alerts" />
                 
         <CheckBoxPreference
                 android:key="Vibrate_phone"
+                android:dependency="show_notifications"
                 android:title="Vibrate"
                 android:defaultValue="true"
                 android:summary="Vibrate device when earthquake information is received" />
-                
-        <EditTextPreference  android:dialogTitle="Minimum Intensity"
-                             android:dialogMessage="Minimum Intensity"
-                             android:key="min_intensity"
-                             android:title="Number"
-                             android:summary="Notify and show entry only if the intensity of earthquake is greater than specified Richters"
-                             android:defaultValue="2.5"/>
+        
+        <com.barefoot.pocketshake.ui.SeekBarPreference android:key="intensity_setting"
+	        android:title="Earthquake Intensity"
+	        android:summary="Record earthquakes only if they cross this threshold intensity"
+	        android:dialogMessage="Minimum Intensity for Notifications"
+	        android:defaultValue="3"
+	        android:text=" Richters"
+	        android:max="30"
+        />
+                   
+        <com.barefoot.pocketshake.ui.SeekBarPreference android:key="radius_value"
+	        android:title="Notification Radius"
+	        android:summary="Notify only if earthquake occurs in specified radius"
+	        android:dialogMessage="Radius to generate notifications"
+	        android:defaultValue="1"
+	        android:text=" Kilometers"
+	        android:max="12000"
+        />
     </PreferenceCategory>
     
     <PreferenceCategory android:title="Frequency">
 		 <ListPreference
-           android:title="Time Unit"
-           android:summary="Choose unit of selected time from seconds, minutes and hours"
+           android:title="Polling Frequency"
+           android:summary="How often should application check for earthquake information"
            android:key="time_freq_unit"
            android:defaultValue="60"
            android:entries="@array/time"
