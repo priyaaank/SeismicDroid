@@ -29,8 +29,7 @@ public class EarthQuakeDatabase extends SQLiteOpenHelper {
 
 	public static class EarthquakeCursor extends SQLiteCursor {
 		/** The query for this cursor */
-		private static final String QUERY = "SELECT _id, location, intensity, longitude, latitude, datetime "
-				+ "FROM earthquakes " + "ORDER BY datetime desc";
+		private static final String QUERY = "SELECT _id, location, intensity, longitude, latitude, datetime FROM earthquakes where intensity > ? ORDER BY datetime desc";
 
 		/** Cursor constructor */
 		private EarthquakeCursor(SQLiteDatabase db, SQLiteCursorDriver driver,
@@ -135,13 +134,12 @@ public class EarthQuakeDatabase extends SQLiteOpenHelper {
 		onCreate(db);
 	}
 
-	public EarthquakeCursor getEarthquakes() {
+	public EarthquakeCursor getEarthquakes(int intensity) {
 		Log.i(LOG_TAG, "Fetching earthquakes from database");
 		SQLiteDatabase db = getReadableDatabase();
 
 		return (EarthquakeCursor) db.rawQueryWithFactory(
-				new EarthquakeCursor.Factory(), EarthquakeCursor.QUERY, null,
-				null);
+				new EarthquakeCursor.Factory(), EarthquakeCursor.QUERY, new String[]{Integer.toString(intensity)}, null);
 	}
 
 	public void saveNewEarthquakesOnly(EarthQuake[] earthqaukeFeed) {

@@ -3,6 +3,8 @@ package com.barefoot.pocketshake.storage;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.barefoot.pocketshake.data.EarthQuake;
@@ -13,15 +15,17 @@ public class EarthQuakeDataWrapper {
 	private EarthQuakeDatabase db;
 	final private static String LOG_TAG = "EarthQuakeDataWrapper";
 	private static ArrayList<EarthQuake> cachedEarthQuakeFeed = new ArrayList<EarthQuake>();
+	private Context context;
 	
 	public EarthQuakeDataWrapper(Context context) {
+		this.context = context;
 		db = new EarthQuakeDatabase(context);
 	}
 	
 	public synchronized void refreshFeedCache(boolean force) {
 		Log.i(LOG_TAG, "Refreshing the cache feed from db. The force flag value is ["+force+"] and the size of cache elements is :: " + cachedEarthQuakeFeed.size());
 		if(cachedEarthQuakeFeed.size() == 0 || force) {
-			EarthquakeCursor allEarthquakes = db.getEarthquakes();
+			EarthquakeCursor allEarthquakes = db.getEarthquakes(getCurrentMinIntensity());
 			try {
 				if(allEarthquakes != null && allEarthquakes.moveToFirst()) {
 					cachedEarthQuakeFeed.clear();
@@ -35,6 +39,11 @@ public class EarthQuakeDataWrapper {
 		}
 	}
 	
+	private int getCurrentMinIntensity() {
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+		return sharedPref.getInt("intensity_setting", 0);
+	}
+
 	public ArrayList<EarthQuake> getEarthQuakes() {
 		Log.i(LOG_TAG, "Returning arraylist containing earthquake details");
 		return cachedEarthQuakeFeed;
