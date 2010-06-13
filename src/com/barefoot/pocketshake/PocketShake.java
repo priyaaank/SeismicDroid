@@ -58,6 +58,7 @@ public class PocketShake extends ListActivity {
     	Log.i(LOG_TAG, "Resuming activity, registering with background service for broadcasts");
 		super.onResume();
 		registerReceiver(receiver, new IntentFilter(FeedSynchronizer.BROADCAST_ACTION));
+		registerReceiver(refreshReceiver , new IntentFilter(QuakePrefrences.BROADCAST_ACTION));
 	}
 
 	@Override
@@ -65,6 +66,12 @@ public class PocketShake extends ListActivity {
 		Log.i(LOG_TAG, "Pausing activity, unregistering with background service for broadcasts");
 		super.onPause();
 		unregisterReceiver(receiver);
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		unregisterReceiver(refreshReceiver);
 	}
 	
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -108,6 +115,14 @@ public class PocketShake extends ListActivity {
 		public void onReceive(Context context, Intent intent) {
 			Log.i(LOG_TAG, "Broadcast received ::" + intent.getAction());
 			updateQuakeFeed();
+		}
+	};
+	
+	private BroadcastReceiver refreshReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			Log.i(LOG_TAG, "Refresh notification received, will refresh screen contents now");
+			updateQuakeFeed();		
 		}
 	};
 	
