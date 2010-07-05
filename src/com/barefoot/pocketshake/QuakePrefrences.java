@@ -19,7 +19,6 @@ public class QuakePrefrences extends PreferenceActivity implements OnSharedPrefe
     public static String BROADCAST_ACTION = "com.barefoot.pocketshake.QuakePreferences.refreshView";
     private Intent broadcast = new Intent(BROADCAST_ACTION);
     private ReferencePointCalculator refCalculator;
-    private Boolean displayInProgress = new Boolean(false);
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) {

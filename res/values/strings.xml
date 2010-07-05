@@ -5,9 +5,10 @@
     <string name="pref_activity">Preferences</string>
     <string name="map_activity">MapView</string>
     <string name="create_db_sql">
-    CREATE TABLE EARTHQUAKES(_id String PRIMARY KEY, location String, intensity String, longitude String, latitude String, datetime Date);
+    CREATE TABLE EARTHQUAKES(_id String PRIMARY KEY, location String, intensity String, longitude String, latitude String, datetime Date, href String);
     </string>
     <string name="upgrade_db_sql">
     DROP TABLE EARTHQUAKES;
     </string>
+    <string name="newsQueryUri">http://news.google.co.in/news/search?q=</string>
 </resources>

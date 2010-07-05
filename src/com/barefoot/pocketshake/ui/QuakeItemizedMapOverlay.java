@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 
+import com.barefoot.pocketshake.R;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
 
@@ -48,16 +51,19 @@ public class QuakeItemizedMapOverlay extends ItemizedOverlay<OverlayItem> {
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
 			//optimize the if loops
+			if(which == 0) {
+				Uri uri = Uri.parse(item.getQuakeDetails().getDetailLink());
+				mContext.startActivity( new Intent( Intent.ACTION_VIEW, uri ) );
+			}
 			
 			if(which == 1) {
-				//re-direct to online website for more details
-			}
-			
-			if(which == 3) {
 				//redirect to google news with keywords
+				String googleSearchURI = mContext.getString(R.string.newsQueryUri) + item.getQuakeDetails().getKeywords();
+				Uri uri = Uri.parse(googleSearchURI);
+				mContext.startActivity(new Intent( Intent.ACTION_VIEW, uri));
 			}
 			
-			if(which == 3) {
+			if(which == 2) {
 				dialog.dismiss();
 			}
 		}

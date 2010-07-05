@@ -39,18 +39,21 @@ public class QuakeFeedParser {
 			String title = null;
 			String cordinates = null;
 			String dateTime = null;
+			String href = null;
 			
 			for (int size = 0; size < nodeLst.getLength(); size++) {
 				currentNode = nodeLst.item(size);
 			    
 			    if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
-			    	id = getNodeValueWithTagNameAs(currentNode, "id");
-			    	title = getNodeValueWithTagNameAs(currentNode, "title");
-			    	cordinates = getNodeValueWithTagNameAs(currentNode, "georss:point");
-			    	dateTime = getNodeValueWithTagNameAs(currentNode, "updated");
+			    	id = getNodeValueWithTagNameAs(currentNode, "id", null);
+			    	title = getNodeValueWithTagNameAs(currentNode, "title", null);
+			    	cordinates = getNodeValueWithTagNameAs(currentNode, "georss:point", null);
+			    	dateTime = getNodeValueWithTagNameAs(currentNode, "updated", null);
+			    	href = getNodeValueWithTagNameAs(currentNode, "link", "href");
 			    	try {
-			    		parsedObjectList.add(new EarthQuake(id, title, cordinates, dateTime));
+			    		parsedObjectList.add(new EarthQuake(id, title, cordinates, dateTime, href));
 			    	} catch(InvalidFeedException ife) {
+			    		Log.e("FeedParser","Feed bombed, don't know whats wrong. Error is "+ife);
 			    		//just procastinate the feed sync until next time out happens
 			    	}
 			    }
@@ -60,17 +63,29 @@ public class QuakeFeedParser {
 		return parsedObjectList;
 	}
 	
-	private String getNodeValueWithTagNameAs(Node currentNode, String tagName) {
+	private String getNodeValueWithTagNameAs(Node currentNode, String tagName, String attrName) {
 		Node valueNode = null;
 		Element entryNode = (Element) currentNode;
 		NodeList idElementList = null;
 		Element idElement = null;
 		idElementList = entryNode.getElementsByTagName(tagName);
 		idElement = (Element) idElementList.item(0);
-		valueNode = (Node)idElement.getChildNodes().item(0);
+		if(null == attrName)
+			valueNode = getChildNode(idElement);
+		else
+			valueNode = getValueFromAttribute(idElement, attrName);
+			
 		return valueNode.getNodeValue();
 	}
 	
+	private Node getValueFromAttribute(Element idElement, String attrName) {
+		return (Node)idElement.getAttributeNode(attrName);
+	}
+
+	private Node getChildNode(Node idElement) {
+		return (Node)idElement.getChildNodes().item(0);
+	}
+
 	private Document getDocument() {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db;

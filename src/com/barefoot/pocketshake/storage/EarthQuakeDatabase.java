@@ -29,7 +29,7 @@ public class EarthQuakeDatabase extends SQLiteOpenHelper {
 
 	public static class EarthquakeCursor extends SQLiteCursor {
 		/** The query for this cursor */
-		private static final String QUERY = "SELECT _id, location, intensity, longitude, latitude, datetime FROM earthquakes where intensity > ? ORDER BY datetime desc";
+		private static final String QUERY = "SELECT _id, location, intensity, longitude, latitude, datetime, href FROM earthquakes where intensity > ? ORDER BY datetime desc";
 
 		/** Cursor constructor */
 		private EarthquakeCursor(SQLiteDatabase db, SQLiteCursorDriver driver,
@@ -72,6 +72,10 @@ public class EarthQuakeDatabase extends SQLiteOpenHelper {
 			return getString(getColumnIndexOrThrow("datetime"));
 		}
 
+		public String getDetailLink() {
+			return getString(getColumnIndexOrThrow("href"));
+		}
+
 		public EarthQuake getEarthQuake() {
 			EarthQuake earthquake = null;
 			try {
@@ -82,7 +86,8 @@ public class EarthQuakeDatabase extends SQLiteOpenHelper {
 								+ getString(getColumnIndexOrThrow("location")),
 						getString(getColumnIndexOrThrow("longitude")) + " "
 								+ getString(getColumnIndexOrThrow("latitude")),
-						getString(getColumnIndexOrThrow("datetime")));
+						getString(getColumnIndexOrThrow("datetime")), 
+						getString(getColumnIndexOrThrow("href")));
 			} catch (InvalidFeedException e) {
 				Log.e("Trying to return earthquake object", e.getMessage());
 			}
@@ -163,6 +168,7 @@ public class EarthQuakeDatabase extends SQLiteOpenHelper {
 				dbValues.put("longitude", eachEarthQuake.getLongitude());
 				dbValues.put("latitude", eachEarthQuake.getLatitude());
 				dbValues.put("datetime", eachEarthQuake.getDate());
+				dbValues.put("href", eachEarthQuake.getDetailLink());
 				getWritableDatabase().insertOrThrow("earthquakes", "datetime", dbValues);
 			} catch (SQLException e) {
 				Log.e("Creating new earthquake", e.getMessage());

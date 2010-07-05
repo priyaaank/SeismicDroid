@@ -14,10 +14,11 @@ public class EarthQuake {
 	private String location;
 	private String intensity;
 	private String date;
+	private String detailLink;
 	
 	private static String localtimezone = new Time().timezone;
 	
-	public EarthQuake(String id, String title, String cordinates, String dateTime) 
+	public EarthQuake(String id, String title, String cordinates, String dateTime, String detailLink) 
 	throws InvalidFeedException {
 		this.id = id;
 		
@@ -31,6 +32,8 @@ public class EarthQuake {
 		this.longitude = latitudeNLongitude[1].trim();
 		
 		this.date = dateTime;
+		
+		this.detailLink = detailLink;
 	}
 
 	public String getId() {
@@ -92,6 +95,14 @@ public class EarthQuake {
 		toReturn.append(this.latitude);
 		Log.v("EarthQuake String representation :: ",toReturn.toString());
 		return toReturn.toString();
+	}
+
+	public String getDetailLink() {
+		return this.detailLink;
+	}
+
+	public String getKeywords() {
+		return ("earthquake in "+location).replace(" ", "+");
 	}
 }
 
