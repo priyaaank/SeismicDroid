@@ -90,7 +90,7 @@ public class PocketShake extends ListActivity {
 	    case ABOUT:
 	    	return true;
 	    case CANCEL:
-	        return true;
+	        this.finish();
 	    }
 	    return false;
 	}

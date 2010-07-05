@@ -29,6 +29,7 @@ public final class R {
         public static final int red=0x7f020006;
         public static final int settings=0x7f020007;
         public static final int yellow=0x7f020008;
+        public static final int zone=0x7f020009;
     }
     public static final class id {
         public static final int date_of_occurance=0x7f080008;
