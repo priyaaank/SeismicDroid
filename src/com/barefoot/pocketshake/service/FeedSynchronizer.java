@@ -32,11 +32,13 @@ public class FeedSynchronizer extends SchedulableService {
 	private ArrayList<EarthQuake> earthQuakes = new ArrayList<EarthQuake>();
 	private QuakeFeedParser parser;
 	private EarthQuakeDatabase db;
+	private NotificationCreator notificationCreator;
 	
 	private static boolean running = false;
 
 	public FeedSynchronizer(String name) {
 		super(name);
+		notificationCreator = new NotificationCreator(this, 0);
 	}
 	
 	public FeedSynchronizer() {
@@ -98,8 +100,9 @@ public class FeedSynchronizer extends SchedulableService {
 				
 				Log.i(LOG_TAG,"Saving enteries to database");
 				//save entries to database
-				db.saveNewEarthquakesOnly(earthQuakes.toArray(new EarthQuake[earthQuakes.size()]));
+				EarthQuake[] newQuakes = db.saveNewEarthquakesOnly(earthQuakes.toArray(new EarthQuake[earthQuakes.size()]));
 				db.deleteRecordsOlderThanDays(purge_day);
+				generateNotifications(newQuakes);
 				sendBroadcast(broadcast);
 			} catch (Throwable t) {
 				Log.e("FetchingNSaving Earthquakes", t.getMessage());
@@ -107,6 +110,14 @@ public class FeedSynchronizer extends SchedulableService {
 			finally {
 				running = false;
 			}
+		}
+	}
+
+	private void generateNotifications(EarthQuake[] newQuakes) {
+		String message = null;
+		for (EarthQuake eachQauake : newQuakes) {
+			message = eachQauake.getIntensity() + " Richter earthquake at " + eachQauake.getLocation();
+			notificationCreator.createNotification(4343423, "Quake Warning!", eachQauake.getLocation(), message, eachQauake.getTimeInLong());
 		}
 	}
 }

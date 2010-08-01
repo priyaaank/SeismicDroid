@@ -83,6 +83,13 @@ public class EarthQuake {
 		return  newTime.format("%d-%b-%Y %H:%M:%S");
 	}
 	
+	public long getTimeInLong() {
+		Time newTime = new Time("UTC");
+		newTime.parse3339(getDate());
+		newTime.switchTimezone(localtimezone);
+		return newTime.toMillis(false);
+	}
+	
 	@Override
 	public String toString() {
 		StringBuffer toReturn = new StringBuffer("");
@@ -104,5 +111,6 @@ public class EarthQuake {
 	public String getKeywords() {
 		return ("earthquake in "+location).replace(" ", "+");
 	}
+	
 }
 

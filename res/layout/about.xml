@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        
+	<LinearLayout
+	android:id="@+id/widget32"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:layout_alignParentTop="true"
+	android:layout_centerHorizontal="true"
+	>
+		<TextView
+		android:id="@+id/widget33"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="SeismicDroid"
+		android:textSize="18sp"
+		android:gravity="center"
+		android:layout_gravity="center">
+		</TextView>
+		<TextView
+		android:id="@+id/widget34"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Seismic Droid is an open source application. It provides near real-time updates for earthquakes from around the world; while several parameters are still configurable. Seismic Droid has two components, a background service and a foreground app. While background service runs at a configurable schedule and maintains a list of earthquakes, foreground app can be started by user and details can be viewed on demand."
+		>
+		</TextView>
+		
+		<TextView
+		android:id="@+id/widget34"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="It's licensed under creative commons license."
+		>
+		</TextView>
+	</LinearLayout>
+
+
+
+</LinearLayout>

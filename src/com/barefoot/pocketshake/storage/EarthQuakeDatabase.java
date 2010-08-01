@@ -1,5 +1,7 @@
 package com.barefoot.pocketshake.storage;
 
+import java.util.ArrayList;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -147,7 +149,8 @@ public class EarthQuakeDatabase extends SQLiteOpenHelper {
 				new EarthquakeCursor.Factory(), EarthquakeCursor.QUERY, new String[]{Integer.toString(intensity)}, null);
 	}
 
-	public void saveNewEarthquakesOnly(EarthQuake[] earthqaukeFeed) {
+	public EarthQuake[] saveNewEarthquakesOnly(EarthQuake[] earthqaukeFeed) {
+		ArrayList<EarthQuake> newQuakes = new ArrayList<EarthQuake>();
 		for (EarthQuake eachEarthQuake : earthqaukeFeed) {
 			if (exists(eachEarthQuake)) {
 				Log.w(LOG_TAG,"Breaking creation loop as current element exists; rest of the enteries are assumed to exist");
@@ -155,7 +158,10 @@ public class EarthQuakeDatabase extends SQLiteOpenHelper {
 				break;
 			}
 			create(eachEarthQuake);
+			newQuakes.add(eachEarthQuake);
 		}
+		
+		return newQuakes.size() > 0 ? (EarthQuake[]) newQuakes.toArray(new EarthQuake[newQuakes.size()]) : new EarthQuake[0];
 	}
 
 	protected void create(EarthQuake eachEarthQuake) {
