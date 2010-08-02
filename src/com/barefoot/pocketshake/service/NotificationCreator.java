@@ -29,6 +29,7 @@ public class NotificationCreator {
 		notification.setLatestEventInfo(notificationContext, title, text, this.notificationIntent);
 		long[] vibrate = {0,100,200,300};
 		notification.vibrate = vibrate;
+		notification.flags |= Notification.FLAG_AUTO_CANCEL;
 		notificationManager.notify(id, notification);
 	}	
 }

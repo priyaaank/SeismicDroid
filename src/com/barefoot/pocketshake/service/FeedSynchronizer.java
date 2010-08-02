@@ -115,9 +115,12 @@ public class FeedSynchronizer extends SchedulableService {
 
 	private void generateNotifications(EarthQuake[] newQuakes) {
 		String message = null;
-		for (EarthQuake eachQauake : newQuakes) {
+		EarthQuake eachQauake = null;
+		for(int i = newQuakes.length-1; i >= 0; i--)
+		{
+			eachQauake = newQuakes[i];
 			message = eachQauake.getIntensity() + " Richter earthquake at " + eachQauake.getLocation();
-			notificationCreator.createNotification(4343423, "Quake Warning!", eachQauake.getLocation(), message, eachQauake.getTimeInLong());
+			notificationCreator.createNotification(938464326, "Quake Warning!", eachQauake.getLocation(), message, eachQauake.getTimeInLong());
 		}
 	}
 }

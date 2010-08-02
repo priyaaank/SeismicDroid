@@ -20,7 +20,7 @@
      		android:theme="@android:style/Theme.NoTitleBar">
      	</activity>
         <activity android:name=".PocketShake"
-                  android:label="@string/app_name">
+                  android:label="@string/app_name" android:launchMode="singleTask">
 			<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
