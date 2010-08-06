@@ -8,7 +8,8 @@ import com.barefoot.pocketshake.utils.StringUtils;
 
 public class EarthQuake {
 	
-	private String id;
+	private int id;
+	private String identifier;
 	private String latitude;
 	private String longitude;
 	private String location;
@@ -18,9 +19,11 @@ public class EarthQuake {
 	
 	private static String localtimezone = new Time().timezone;
 	
-	public EarthQuake(String id, String title, String cordinates, String dateTime, String detailLink) 
+	public EarthQuake(int id, String identifier, String title, String cordinates, String dateTime, String detailLink) 
 	throws InvalidFeedException {
+		
 		this.id = id;
+		this.identifier = identifier;
 		
 		String[] intensityAndLocation = title.split(", ");
 		this.location = intensityAndLocation[1].trim();
@@ -36,8 +39,12 @@ public class EarthQuake {
 		this.detailLink = detailLink;
 	}
 
-	public String getId() {
-		return id;
+	public int getId() {
+		return this.id;
+	}
+	
+	public String getIdentifier() {
+		return identifier;
 	}
 	
 	public String getLatitude() {

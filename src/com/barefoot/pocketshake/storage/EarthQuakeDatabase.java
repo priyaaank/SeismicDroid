@@ -31,7 +31,7 @@ public class EarthQuakeDatabase extends SQLiteOpenHelper {
 
 	public static class EarthquakeCursor extends SQLiteCursor {
 		/** The query for this cursor */
-		private static final String QUERY = "SELECT _id, location, intensity, longitude, latitude, datetime, href FROM earthquakes where intensity > ? ORDER BY datetime desc";
+		private static final String QUERY = "SELECT id, identifier, location, intensity, longitude, latitude, datetime, href FROM earthquakes where intensity > ? ORDER BY datetime desc";
 
 		/** Cursor constructor */
 		private EarthquakeCursor(SQLiteDatabase db, SQLiteCursorDriver driver,
@@ -48,10 +48,14 @@ public class EarthQuakeDatabase extends SQLiteOpenHelper {
 				return new EarthquakeCursor(db, driver, editTable, query);
 			}
 		}
-
+		
 		// accessor methods for each column.
 		public String getEarthquakeId() {
-			return getString(getColumnIndexOrThrow("_id"));
+			return getString(getColumnIndexOrThrow("identifier"));
+		}
+
+		public int getId() {
+			return getInt(getColumnIndexOrThrow("id"));
 		}
 
 		public String getLocation() {
@@ -82,7 +86,8 @@ public class EarthQuakeDatabase extends SQLiteOpenHelper {
 			EarthQuake earthquake = null;
 			try {
 				earthquake = new EarthQuake(
-						getString(getColumnIndexOrThrow("_id")), "M"
+						getInt(getColumnIndexOrThrow("id")),
+						getString(getColumnIndexOrThrow("identifier")), "M"
 								+ getString(getColumnIndexOrThrow("intensity"))
 								+ ", "
 								+ getString(getColumnIndexOrThrow("location")),
@@ -168,7 +173,7 @@ public class EarthQuakeDatabase extends SQLiteOpenHelper {
 		if (eachEarthQuake != null) {
 			try {
 				ContentValues dbValues = new ContentValues();
-				dbValues.put("_id", eachEarthQuake.getId());
+				dbValues.put("identifier", eachEarthQuake.getIdentifier());
 				dbValues.put("intensity", eachEarthQuake.getIntensity());
 				dbValues.put("location", eachEarthQuake.getLocation());
 				dbValues.put("longitude", eachEarthQuake.getLongitude());
@@ -186,10 +191,10 @@ public class EarthQuakeDatabase extends SQLiteOpenHelper {
 	public boolean exists(EarthQuake eachEarthQuake) {
 		if (eachEarthQuake != null) {
 			Cursor c = null;
-			String count_query = "Select count(*) from earthquakes where _id = ?";
+			String count_query = "Select count(*) from earthquakes where identifier = ?";
 			try {
 				c = getReadableDatabase().rawQuery(count_query,
-						new String[] { eachEarthQuake.getId() });
+						new String[] { eachEarthQuake.getIdentifier() });
 				if (c != null && c.moveToFirst() && c.getInt(0) > 0)
 					return true;
 

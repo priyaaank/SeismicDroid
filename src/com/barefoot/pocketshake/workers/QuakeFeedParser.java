@@ -35,7 +35,8 @@ public class QuakeFeedParser {
 			doc.getDocumentElement().normalize();
 			
 			Node currentNode = null;
-			String id = null;
+			int id = 0; //Never used while creating
+			String identifier = null;
 			String title = null;
 			String cordinates = null;
 			String dateTime = null;
@@ -45,16 +46,16 @@ public class QuakeFeedParser {
 				currentNode = nodeLst.item(size);
 			    
 			    if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
-			    	id = getNodeValueWithTagNameAs(currentNode, "id", null);
+			    	identifier = getNodeValueWithTagNameAs(currentNode, "id", null);
 			    	title = getNodeValueWithTagNameAs(currentNode, "title", null);
 			    	cordinates = getNodeValueWithTagNameAs(currentNode, "georss:point", null);
 			    	dateTime = getNodeValueWithTagNameAs(currentNode, "updated", null);
 			    	href = getNodeValueWithTagNameAs(currentNode, "link", "href");
 			    	try {
-			    		parsedObjectList.add(new EarthQuake(id, title, cordinates, dateTime, href));
+			    		parsedObjectList.add(new EarthQuake(id, identifier, title, cordinates, dateTime, href));
 			    	} catch(InvalidFeedException ife) {
 			    		Log.e("FeedParser","Feed bombed, don't know whats wrong. Error is "+ife);
-			    		//just procastinate the feed sync until next time out happens
+			    		//just procrastinate the feed sync until next time out happens
 			    	}
 			    }
 			}
