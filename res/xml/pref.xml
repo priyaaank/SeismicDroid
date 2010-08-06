@@ -7,14 +7,14 @@
                 android:key="show_notifications"
                 android:title="Notifications"
                 android:defaultValue="true"
-                android:summary="Show notifications on home for earthquake alerts" />
+                android:summary="Do you want to be notified of new earthquakes, in status bar?" />
                 
         <CheckBoxPreference
-                android:key="Vibrate_phone"
+                android:key="vibrate_phone"
                 android:dependency="show_notifications"
                 android:title="Vibrate"
                 android:defaultValue="true"
-                android:summary="Vibrate device when earthquake information is received" />
+                android:summary="Do you want your phone to vibrate when earthquakes happen?" />
         
         <com.barefoot.pocketshake.ui.SeekBarPreference android:key="intensity_setting"
 	        android:title="Earthquake Intensity"
@@ -29,7 +29,7 @@
 	        android:title="Notification Radius"
 	        android:summary="Notify only if earthquake occurs in specified radius"
 	        android:dialogMessage="Radius to generate notifications"
-	        android:defaultValue="1"
+	        android:defaultValue="19000"
 	        android:text=" Kilometers"
 	        android:max="20000"
         />
@@ -40,15 +40,15 @@
            android:title="Polling Frequency"
            android:summary="How often should application check for earthquake information"
            android:key="time_freq_unit"
-           android:defaultValue="60"
+           android:defaultValue="1800000"
            android:entries="@array/time"
            android:entryValues="@array/time_values" />
     </PreferenceCategory>
     
     <PreferenceCategory android:title="Storage">
     	<ListPreference
-           android:title="Entry Age"
-           android:summary="Delete entries older than..."
+           android:title="Purge old records"
+           android:summary="Threshold date. Older entries will be deleted"
            android:key="purge_day"
            android:defaultValue="30"
            android:entries="@array/days"

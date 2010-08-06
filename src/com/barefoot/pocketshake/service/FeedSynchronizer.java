@@ -88,6 +88,7 @@ public class FeedSynchronizer extends SchedulableService {
 			
 			SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 			String purge_day = sharedPref.getString("purge_day", "30");
+			boolean notifications = sharedPref.getBoolean("show_notifications", true);
 			
 			try {
 				response = client.execute(getMethod);
@@ -102,7 +103,10 @@ public class FeedSynchronizer extends SchedulableService {
 				//save entries to database
 				EarthQuake[] newQuakes = db.saveNewEarthquakesOnly(earthQuakes.toArray(new EarthQuake[earthQuakes.size()]));
 				db.deleteRecordsOlderThanDays(purge_day);
-				generateNotifications(newQuakes);
+				
+				if(notifications)
+					generateNotifications(newQuakes);
+				
 				sendBroadcast(broadcast);
 			} catch (Throwable t) {
 				Log.e("FetchingNSaving Earthquakes", t.getMessage());
@@ -116,11 +120,13 @@ public class FeedSynchronizer extends SchedulableService {
 	private void generateNotifications(EarthQuake[] newQuakes) {
 		String message = null;
 		EarthQuake eachQauake = null;
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+		boolean vibrate = sharedPref.getBoolean("vibrate_phone", true);
 		for(int i = newQuakes.length-1; i >= 0; i--)
 		{
 			eachQauake = newQuakes[i];
 			message = eachQauake.getIntensity() + " Richter earthquake at " + eachQauake.getLocation();
-			notificationCreator.createNotification(938464326, "Quake Warning!", eachQauake.getLocation(), message, eachQauake.getTimeInLong());
+			notificationCreator.createNotification(938464326, "Quake Warning!", eachQauake.getLocation(), message, eachQauake.getTimeInLong(), vibrate);
 		}
 	}
 }
