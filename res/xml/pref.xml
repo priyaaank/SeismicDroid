@@ -16,7 +16,7 @@
                 android:defaultValue="true"
                 android:summary="Do you want your phone to vibrate when earthquakes happen?" />
         
-        <com.barefoot.pocketshake.ui.SeekBarPreference android:key="intensity_setting"
+        <com.barefoot.seismicdroid.ui.SeekBarPreference android:key="intensity_setting"
 	        android:title="Earthquake Intensity"
 	        android:summary="Record earthquakes only if they cross this threshold intensity"
 	        android:dialogMessage="Minimum Intensity for Notifications"
@@ -25,7 +25,7 @@
 	        android:max="30"
         />
                    
-        <com.barefoot.pocketshake.ui.SeekBarPreference android:key="radius_value"
+        <com.barefoot.seismicdroid.ui.SeekBarPreference android:key="radius_value"
 	        android:title="Notification Radius"
 	        android:summary="Notify only if earthquake occurs in specified radius"
 	        android:dialogMessage="Radius to generate notifications"

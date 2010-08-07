@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="com.barefoot.pocketshake"
+      package="com.barefoot.seismicdroid"
       android:versionCode="1"
       android:versionName="1.0">
     
@@ -12,14 +12,14 @@
 
     <application android:icon="@drawable/icon" android:label="@string/app_name">
     	<uses-library android:name="com.google.android.maps" />
-    	<service android:name="com.barefoot.pocketshake.service.FeedSynchronizer"/>
+    	<service android:name="com.barefoot.seismicdroid.service.FeedSynchronizer"/>
     	<activity android:name=".QuakeMapView" android:label="@string/map_activity"
      		android:theme="@android:style/Theme.NoTitleBar">
      	</activity>
     	<activity android:name=".QuakePrefrences" android:label="@string/pref_activity"
      		android:theme="@android:style/Theme.NoTitleBar">
      	</activity>
-        <activity android:name=".PocketShake"
+        <activity android:name=".SeismicDroid"
                   android:label="@string/app_name" android:launchMode="singleTask">
 			<intent-filter>
                 <action android:name="android.intent.action.MAIN" />

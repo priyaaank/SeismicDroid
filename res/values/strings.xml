@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="feed_url">http://earthquake.usgs.gov/earthquakes/catalogs/1day-M2.5.xml</string>
-    <string name="app_name">PocketShake</string>
+    <string name="app_name">SeismicDroid</string>
     <string name="pref_activity">Preferences</string>
     <string name="map_activity">MapView</string>
     <string name="create_db_sql">
