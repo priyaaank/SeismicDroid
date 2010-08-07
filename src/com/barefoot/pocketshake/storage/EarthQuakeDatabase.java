@@ -29,6 +29,11 @@ public class EarthQuakeDatabase extends SQLiteOpenHelper {
 		this.mContext = context;
 	}
 
+	@Override
+	public void finalize() {
+		super.close();
+	}
+	
 	public static class EarthquakeCursor extends SQLiteCursor {
 		/** The query for this cursor */
 		private static final String QUERY = "SELECT id, identifier, location, intensity, longitude, latitude, datetime, href FROM earthquakes where intensity > ? ORDER BY datetime desc";

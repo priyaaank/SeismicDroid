@@ -43,7 +43,8 @@ public class EarthQuakeDataWrapper {
 					} while(allEarthquakes.moveToNext());
 				}
 			} finally {
-				allEarthquakes.close();
+				if(!allEarthquakes.isClosed())
+					allEarthquakes.close();
 			}
 		}
 	}

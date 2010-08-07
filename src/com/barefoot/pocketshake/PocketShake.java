@@ -101,12 +101,13 @@ public class PocketShake extends ListActivity {
 		messageListAdapter = new QuakeCustomAdapter(this, R.layout.quake, fetchLatestFeeds()); 
 		setListAdapter(messageListAdapter);
 		Log.i(LOG_TAG, "Message List Adapter fetched and set");
-		showUpdateIndication();
+//		Commenting it out, as it is creating problem with some error right now. Needs to be fixed and uncommented
+//		showUpdateIndication();
 	}
 	
 	private void showUpdateIndication() {
 		Log.i(LOG_TAG, "Showing update indication");
-		Toast updateNotification = Toast.makeText(this, "Updated!", Toast.LENGTH_LONG);
+		Toast updateNotification = Toast.makeText(this, "Updated!", Toast.LENGTH_SHORT);
 		updateNotification.setGravity(Gravity.CENTER|Gravity.CENTER, 0, 0);
 		updateNotification.show();
 	}
