@@ -19,12 +19,14 @@ public class QuakePrefrences extends PreferenceActivity implements OnSharedPrefe
     public static String BROADCAST_ACTION = "com.barefoot.pocketshake.QuakePreferences.refreshView";
     private Intent broadcast = new Intent(BROADCAST_ACTION);
     private ReferencePointCalculator refCalculator;
+    private EarthQuakeDataWrapper dbWrapper;
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.pref);
         refCalculator = new ReferencePointCalculator(this);
+        dbWrapper = new EarthQuakeDataWrapper(this);
     }
 	
 	@Override
@@ -38,7 +40,7 @@ public class QuakePrefrences extends PreferenceActivity implements OnSharedPrefe
 		super.onPause();
 		getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
 	}
-
+	
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
@@ -66,7 +68,7 @@ public class QuakePrefrences extends PreferenceActivity implements OnSharedPrefe
 	}
 	
 	private void refreshFeedWithNewSettings() {
-		new EarthQuakeDataWrapper(this).refreshFeedCache(true);
+		dbWrapper.refreshFeedCache(true);
 		sendBroadcast(broadcast);
 	}
 	
