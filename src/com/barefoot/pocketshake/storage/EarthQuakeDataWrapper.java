@@ -29,11 +29,11 @@ public class EarthQuakeDataWrapper {
 	public synchronized void refreshFeedCache(boolean force) {
 		Log.i(LOG_TAG, "Refreshing the cache feed from db. The force flag value is ["+force+"] and the size of cache elements is :: " + cachedEarthQuakeFeed.size());
 		if(cachedEarthQuakeFeed.size() == 0 || force) {
+			cachedEarthQuakeFeed.clear();
 			EarthquakeCursor allEarthquakes = db.getEarthquakes(getCurrentMinIntensity());
 			EarthQuake currentEarthquake = null;
 			try {
 				if(allEarthquakes != null && allEarthquakes.moveToFirst()) {
-					cachedEarthQuakeFeed.clear();
 					do {
 						currentEarthquake = allEarthquakes.getEarthQuake();
 						if(!withinRadius(currentEarthquake))
