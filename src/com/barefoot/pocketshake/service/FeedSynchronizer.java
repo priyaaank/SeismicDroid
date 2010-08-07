@@ -18,6 +18,7 @@ import android.util.Log;
 
 import com.barefoot.pocketshake.R;
 import com.barefoot.pocketshake.data.EarthQuake;
+import com.barefoot.pocketshake.filters.FilterStore;
 import com.barefoot.pocketshake.storage.EarthQuakeDatabase;
 import com.barefoot.pocketshake.workers.QuakeFeedParser;
 
@@ -33,12 +34,14 @@ public class FeedSynchronizer extends SchedulableService {
 	private QuakeFeedParser parser;
 	private EarthQuakeDatabase db;
 	private NotificationCreator notificationCreator;
+	private FilterStore filterStore;
 	
 	private static boolean running = false;
 
 	public FeedSynchronizer(String name) {
 		super(name);
 		notificationCreator = new NotificationCreator(this, 0);
+		filterStore = new FilterStore(this);
 	}
 	
 	public FeedSynchronizer() {
@@ -125,6 +128,8 @@ public class FeedSynchronizer extends SchedulableService {
 		for(int i = newQuakes.length-1; i >= 0; i--)
 		{
 			eachQauake = newQuakes[i];
+			if(!filterStore.pass(eachQauake))
+				continue;
 			message = eachQauake.getIntensity() + " Richter earthquake at " + eachQauake.getLocation();
 			notificationCreator.createNotification(938464326, "Quake Warning!", eachQauake.getLocation(), message, eachQauake.getTimeInLong(), vibrate);
 		}
