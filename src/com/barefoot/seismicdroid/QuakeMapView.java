@@ -53,7 +53,7 @@ public class QuakeMapView extends MapActivity {
 	}
 	
 	private void updateOverlaysList(EarthQuake currentQuakeDetails) {
-		Drawable drawable = this.getResources().getDrawable(R.drawable.zone);
+		Drawable drawable = this.getResources().getDrawable(R.drawable.intensity);
 		QuakeItemizedMapOverlay itemizedoverlay = new QuakeItemizedMapOverlay(drawable, this);
 		createOverlayItem(itemizedoverlay, currentQuakeDetails);
 		mapOverlays.add(itemizedoverlay);

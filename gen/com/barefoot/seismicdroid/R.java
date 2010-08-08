@@ -24,8 +24,8 @@ public final class R {
         public static final int cancel=0x7f020001;
         public static final int green=0x7f020002;
         public static final int icon=0x7f020003;
-        public static final int orange=0x7f020004;
-        public static final int quake=0x7f020005;
+        public static final int intensity=0x7f020004;
+        public static final int orange=0x7f020005;
         public static final int quakestatus=0x7f020006;
         public static final int red=0x7f020007;
         public static final int settings=0x7f020008;
