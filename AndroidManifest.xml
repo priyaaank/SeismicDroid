@@ -16,6 +16,8 @@
     	<activity android:name=".QuakeMapView" android:label="@string/map_activity"
      		android:theme="@android:style/Theme.NoTitleBar">
      	</activity>
+    	<activity android:name=".About" android:theme="@android:style/Theme.NoTitleBar">
+     	</activity>
     	<activity android:name=".QuakePrefrences" android:label="@string/pref_activity"
      		android:theme="@android:style/Theme.NoTitleBar">
      	</activity>

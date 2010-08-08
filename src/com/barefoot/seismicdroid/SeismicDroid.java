@@ -89,6 +89,8 @@ public class SeismicDroid extends ListActivity {
 	    	startActivity(newIntent);
 	        return true;
 	    case ABOUT:
+	    	Intent aboutIntent = new Intent(this, About.class);
+	    	startActivity(aboutIntent);
 	    	return true;
 	    case CANCEL:
 	        this.finish();

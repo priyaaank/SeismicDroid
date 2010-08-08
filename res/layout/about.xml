@@ -12,29 +12,57 @@
 	android:layout_alignParentTop="true"
 	android:layout_centerHorizontal="true"
 	>
+	
 		<TextView
-		android:id="@+id/widget33"
-		android:layout_width="wrap_content"
+		android:id="@+id/about_header"
+		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:text="SeismicDroid"
-		android:textSize="18sp"
 		android:gravity="center"
-		android:layout_gravity="center">
+		android:layout_gravity="center"
+		android:text="Seismic Droid"
+		android:textSize="24dip" 
+		android:textColor="#FFFFFF" 
+		android:background="#404040">
 		</TextView>
+
 		<TextView
-		android:id="@+id/widget34"
+		android:id="@+id/app_desc"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		android:paddingTop="10dip"
 		android:text="Seismic Droid is an open source application. It provides near real-time updates for earthquakes from around the world; while several parameters are still configurable. Seismic Droid has two components, a background service and a foreground app. While background service runs at a configurable schedule and maintains a list of earthquakes, foreground app can be started by user and details can be viewed on demand."
-		>
+		android:textSize="15dip">
 		</TextView>
 		
 		<TextView
-		android:id="@+id/widget34"
-		android:layout_width="wrap_content"
+		android:id="@+id/license_header"
+		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:text="It's licensed under creative commons license."
-		>
+		android:gravity="center"
+		android:layout_gravity="center"
+		android:text="Licensing Information"
+		android:textSize="24dip" 
+		android:layout_marginTop="20dip" 
+		android:textColor="#FFFFFF" 
+		android:background="#404040">
+		</TextView>
+		
+		<ImageView 
+	   	android:id="@+id/license_image"
+	   	android:src="@drawable/license"
+	   	android:layout_width="wrap_content"
+	   	android:layout_height="wrap_content"
+	   	android:gravity="center"
+		android:layout_gravity="center" 
+		android:paddingTop="10dip"
+		android:paddingBottom="10dip"
+		/>
+		
+		<TextView
+		android:id="@+id/license_text"
+		android:textSize="15dip"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content">
 		</TextView>
 	</LinearLayout>
 
