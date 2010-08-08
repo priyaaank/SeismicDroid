@@ -1,0 +1,14 @@
+h1. Seismic Droid
+
+_You need to have *Install App from unknown sources* checked in your *Application Settings* if you want to install app from "here":http://github.com/priyaaank/SeismicDroid/downloads_
+
+Seismic Droid is an android application in _Alpha_ release. It tracks all the earthquakes occurring around the world potentially close to real time. Some of the prominent features of the app are listed below:
+
+* Tracks earthquakes in real time. (_Frequency of checking for earthquakes is configurable, however too frequent checks can drain cellphone battery faster_) 
+* Shows earthquake hit area on Google maps ^TM^, with location triangulated. 
+* Provides options to search Google news ^TM^ for specific earthquakes news. Also you can look up details on other websites for each earthquake.
+* Earthquake info is stored locally, so that you can fire up app at any point of time without network. (_History can be purged by choosing appropriate settings_) 
+* Notifications are generated on status bar. Vibration can also be switched as part of notifications in settings. (_Notifications are optional_)
+* Notifications can be specific for a given radius and intensity threshold. (_For notification radius to work, you need to have a last known location with your GPS. App doesn't specifically fire up GPS to get current location; as thats a waste of battery every time, specifically when your location is liable to change only rarely_) 
+* Front end app just provides a way to look up individual earthquake details. A service in background runs at configured time interval to check for earthquakes and generates notifications. (_Time interval is configurable_). This service starts on phone boot up.    
+* Color coding highlights earthquakes with different intensity visually, to provide immediate distinction of varied intensity.
