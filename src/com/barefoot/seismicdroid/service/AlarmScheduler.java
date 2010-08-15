@@ -29,12 +29,13 @@ public class AlarmScheduler {
 		if(period != null) {
 			try {
 				mgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 
-					SystemClock.elapsedRealtime()+5000,
-					Integer.parseInt(period),
-					pi);
+						SystemClock.elapsedRealtime()+5000,
+						Integer.parseInt(period),
+						pi);
 				Log.i("AlarmScheduler rescheduling the alarm","Alarm scheduled to go off at an interval of "+period+" millisec");
-			} catch(NumberFormatException e) {
-				Log.e("AlarmScheduler trying to convert preference value into alarm interval", e.getMessage());
+			}
+			catch(Exception e) {
+				Log.e("Could not reschedule the alarm, exception occured.", e.getMessage());
 			}
 		}
 	}

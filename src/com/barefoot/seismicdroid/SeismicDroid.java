@@ -3,6 +3,7 @@ package com.barefoot.seismicdroid;
 import java.util.ArrayList;
 
 import android.app.ListActivity;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -18,9 +19,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.barefoot.seismicdroid.data.EarthQuake;
+import com.barefoot.seismicdroid.service.AlarmScheduler;
 import com.barefoot.seismicdroid.service.FeedSynchronizer;
+import com.barefoot.seismicdroid.service.OnAlarmReceiver;
 import com.barefoot.seismicdroid.storage.EarthQuakeDataWrapper;
-import com.barefoot.seismicdroid.R;
 
 public class SeismicDroid extends ListActivity {
 	
@@ -44,8 +46,25 @@ public class SeismicDroid extends ListActivity {
         dbWrapper = new EarthQuakeDataWrapper(this);
         updateQuakeFeed();
         this.dialog.dismiss();
+        
+        //at the end just making sure that service is actually running
+        fireUpServiceIfDead();
     }
     
+	private void fireUpServiceIfDead() {
+		if(!isServiceScehduled()) {
+			(new AlarmScheduler(this)).updateAlarmSchedule();
+			Log.i(LOG_TAG, "Scheduled the background service as it wasn't scheduled already!");
+		}
+	}
+	
+	
+	private boolean isServiceScehduled() {
+		Intent existingIntent=new Intent(this, OnAlarmReceiver.class);
+		PendingIntent broadcast = PendingIntent.getBroadcast(this, 0, existingIntent, PendingIntent.FLAG_NO_CREATE);
+		return (broadcast != null);
+	}
+
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		Log.i(LOG_TAG, "List item clicked at position :: " + position);
