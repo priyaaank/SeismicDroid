@@ -118,6 +118,18 @@ public class EarthQuake {
 	public String getKeywords() {
 		return ("earthquake in "+location).replace(" ", "+");
 	}
+
+	public String getTwitterMessage() {
+		StringBuffer message = new StringBuffer("Earthquake at ");
+		message.append(this.location);
+		message.append(" measuring ");
+		message.append(this.intensity);
+		message.append(" Richters ");
+		message.append(" on ");
+		message.append(getLocalTime()+"!!");
+		message.append(" #seismicdroid #earthquake");
+		return message.toString();
+	}
 	
 }
 

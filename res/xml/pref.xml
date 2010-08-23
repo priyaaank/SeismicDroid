@@ -34,6 +34,26 @@
 	        android:max="20000"
         />
     </PreferenceCategory>
+	
+	<PreferenceCategory android:title="Twitter Settings">
+     <PreferenceScreen
+             android:key="twitterPref"
+             android:title="Account Settings"
+             android:summary="Credentials for your twitter account.">
+          <EditTextPreference
+                        android:name="Username for Twitter"
+                        android:summary="Set username/handle for your twitter account"
+                        android:title="Username"
+                        android:key="twitter_username" />   
+          <EditTextPreference
+                        android:name="Password for Twitter"
+                        android:summary="Set password for your twitter account"
+                        android:title="Password"
+                        android:key="twitter_password"
+                        android:inputType="textPassword" />   
+          
+     </PreferenceScreen>
+    </PreferenceCategory>
     
     <PreferenceCategory android:title="Frequency">
 		 <ListPreference
