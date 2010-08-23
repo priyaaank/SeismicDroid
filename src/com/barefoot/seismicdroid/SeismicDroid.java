@@ -11,12 +11,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.barefoot.seismicdroid.data.EarthQuake;
 import com.barefoot.seismicdroid.service.AlarmScheduler;
@@ -127,12 +125,12 @@ public class SeismicDroid extends ListActivity {
 //		showUpdateIndication();
 	}
 	
-	private void showUpdateIndication() {
-		Log.i(LOG_TAG, "Showing update indication");
-		Toast updateNotification = Toast.makeText(this, "Updated!", Toast.LENGTH_SHORT);
-		updateNotification.setGravity(Gravity.CENTER|Gravity.CENTER, 0, 0);
-		updateNotification.show();
-	}
+//	private void showUpdateIndication() {
+//		Log.i(LOG_TAG, "Showing update indication");
+//		Toast updateNotification = Toast.makeText(this, "Updated!", Toast.LENGTH_SHORT);
+//		updateNotification.setGravity(Gravity.CENTER|Gravity.CENTER, 0, 0);
+//		updateNotification.show();
+//	}
 		
 	private BroadcastReceiver receiver=new BroadcastReceiver() {
 		public void onReceive(Context context, Intent intent) {

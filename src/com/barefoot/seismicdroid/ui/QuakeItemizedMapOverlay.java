@@ -57,6 +57,11 @@ public class QuakeItemizedMapOverlay extends ItemizedOverlay<OverlayItem> {
 			//optimize the if loops
 			if (which == 0) {
 				twitterPost = new TwitterPost(QuakeItemizedMapOverlay.this.mContext);
+				if(!twitterPost.isReady())
+				{
+					showMissingCredentialsNotification();
+					return;
+				}
 				boolean status = twitterPost.postMessage(item.getQuakeDetails().getTwitterMessage()); 
 				showNotification(status);
 			}
@@ -81,6 +86,12 @@ public class QuakeItemizedMapOverlay extends ItemizedOverlay<OverlayItem> {
 		private void showNotification(boolean status) {
 			String text = status ? "Tweeted!!" : "Nah.. Something isn't working. Try Later.";
 			Toast updateNotification = Toast.makeText(QuakeItemizedMapOverlay.this.mContext, text, Toast.LENGTH_SHORT);
+			updateNotification.setGravity(Gravity.CENTER|Gravity.CENTER, 0, 0);
+			updateNotification.show();
+		}
+		
+		private void showMissingCredentialsNotification() {
+			Toast updateNotification = Toast.makeText(QuakeItemizedMapOverlay.this.mContext, "Twitter Credentials are not set in preferences!", Toast.LENGTH_SHORT);
 			updateNotification.setGravity(Gravity.CENTER|Gravity.CENTER, 0, 0);
 			updateNotification.show();
 		}
